@@ -2,7 +2,7 @@
  * Created by Administrator on 2019/2/19.
  */
 
-var hostIp = "http://172.16.7.105:";
+var hostIp = "http://127.0.0.1:";
 
 var regulateSucc = {
     "uploadFolder" : "/home/yfdev/src/ywt_web",                       // 上传文件所在文件夹
@@ -96,8 +96,8 @@ const TableLanguage = {
         "processing": "正在加载中......"
     };
 const TableLengthMenu = [
-        [10, 20, 30, -1],
-        [10, 20, 30, "所有"] // change per page values here
+        [10, 20, 30, 50, -1],
+        [10, 20, 30, 50, "所有"] // change per page values here
     ];
 
 var PageLength = 20;
