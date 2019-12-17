@@ -226,23 +226,11 @@ var ArtEdit = function() {
             validator.resetForm();
             $(".article-form").find(".has-error").removeClass("has-error");
             $(".modal-title").text("编辑文章");
-            var exclude = ["article"];
             var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
             var artid = $("#art_table").dataTable().fnGetData(row).artid;
-            var art = new Object();
-            for(var i=0; i < artList.length; i++){
-                if(artid == artList[i].artid){
-                    art = artList[i];
-                }
-            }
-            var options = { jsonValue: art, exclude:exclude, isDebug: false};
-            $(".article-form").initForm(options);
-            //LOGO框赋值
-            $("#cover").siblings("img").attr("src", art.coverimage);
-            $("#cover").siblings("input[name=image], input[name=oldimage]").val(art.coverimage);
-            $("#article").summernote("code", art.content);
-            $("input[name=edittype]").val(ARTICLEADD);
-            $('#edit_art').modal('show');
+            //获取该文章的内容
+            var data = {artid: artid};
+            getArticleContent(data);
         });
 
         $("#art_table").on('click', '#op_pre', function (e) {
@@ -373,3 +361,25 @@ $("#cover").change(function(){
 
     };
 });
+
+
+function getArticleContentEnd(flg, result){
+    if(flg){
+        if (result && result.retcode == SUCCESS) {
+            var art = result.response;
+            var exclude = ["article"];
+            var options = { jsonValue: art, exclude:exclude, isDebug: false};
+            $(".article-form").initForm(options);
+            //LOGO框赋值
+            $("#cover").siblings("img").attr("src", art.coverimage);
+            $("#cover").siblings("input[name=image], input[name=oldimage]").val(art.coverimage);
+            $("#article").summernote("code", art.article);
+            $("input[name=edittype]").val(ARTICLEADD);
+            $('#edit_art').modal('show');
+        }else{
+            alertDialog("获取文章内容失败！");
+        }
+    }else{
+        alertDialog("获取文章内容失败！");
+    }
+}
