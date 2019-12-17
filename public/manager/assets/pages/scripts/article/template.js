@@ -39,7 +39,7 @@ function getArticleContentEnd(flg, result){
 function articleDataSet(data){
     if(data != null){
         $("#xian-title").html(data.title);
-        $("#time").html(data.time);
+        $("#time").html(dateTimeFormat(data.time));
         $("#editor").html(data.editor);
         $("#xian-body").html(data.content);
     }
