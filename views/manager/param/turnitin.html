@@ -1,0 +1,103 @@
+<!-- 该页面嵌套到layout页面中 -->
+{% extends '../layout.html' %}
+
+<!-- 以下部分页面嵌套到layout的block main和endblock之间 -->
+{% block main %}
+
+<!-- 页面标题 -->
+<div class="portlet light bordered">
+    <div class="caption">
+        <i class="icon-social-dribbble font-green"></i>
+        <span class="caption-subject font-green bold uppercase">turnitin国际版参数</span>
+    </div>
+</div>
+
+<!-- 国际版参数Form -->
+<div class="portlet light bordered" style="margin-top: -35px">
+    <div class="portlet-body">
+        <form class="turnitin-form form-horizontal" role="form">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">用户名<span class="required"> * </span></label>
+                            <div class="col-md-9">
+                                <input class="form-control" placeholder="用户名" name="uname">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">密码<span class="required"> * </span></label>
+                            <div class="col-md-9">
+                                <input class="form-control" placeholder="密码" name="password" maxlength="30">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Class ID<span class="required"> * </span></label>
+                            <div class="col-md-9">
+                                <input class="form-control" placeholder="Class ID" name="classid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">aid<span class="required"> * </span></label>
+                            <div class="col-md-9">
+                                <input class="form-control" placeholder="aid" name="aid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">sub aid<span class="required"> * </span></label>
+                            <div class="col-md-9">
+                                <input class="form-control" placeholder="aid" name="subaid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">论文路径<span class="required"> * </span></label>
+                            <div class="col-md-9">
+                                <input class="form-control" placeholder="论文路径" name="thesispath">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">报告路径<span class="required"> * </span></label>
+                            <div class="col-md-9">
+                                <input class="form-control" placeholder="报告路径" name="reportpath">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+                <div class="form-actions" style="margin-top: 20px">
+                    <div class="row">
+                        <div class="col-md-offset-5 col-md-4">
+                            <button class="btn blue" id="para_modify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--本页面用到插件的JS-->
+<script src="../../../public/manager/assets/pages/scripts/md5.js" type="text/javascript"></script>
+
+<!--本页面用到的JS-->
+<script src="../../../public/manager/assets/pages/scripts/param/turnitin.js" type="text/javascript"></script>
+{% endblock %}
