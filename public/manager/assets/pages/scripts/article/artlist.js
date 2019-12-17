@@ -249,7 +249,7 @@ var ArtEdit = function() {
                 .removeAttr("checked")
                 .removeAttr("selected");
             $("#article").summernote("code", "");
-            $("input[name=edittype]").val(ARTEDIT);
+            $("input[name=edittype]").val(ARTICLEADD);
             $("#cover").siblings("img").attr("src", "/public/manager/assets/pages/img/default.jpg");
             $("#cover").siblings("input[name=image], input[name=oldimage]").val("/public/manager/assets/pages/img/default.jpg");
             $('#edit_art').modal('show');
