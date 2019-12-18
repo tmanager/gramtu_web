@@ -208,16 +208,16 @@ function articleEdit(data){
         type: "post",
         contentType: "application/json",
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: webUrl + "article/artedit",    //请求发送到TestServlet处
+        url: webUrl + "article/edit",    //请求发送到TestServlet处
         data: sendMessageEdit(DEFAULT, data),
         dataType: "json",        //返回数据形式为json
         success: function (result) {
             console.info("articleEdit:" + JSON.stringify(result));
-            artInfoEditEnd(true, result, ARTDELETE);
+            artInfoEditEnd(true, result, ARTEDIT);
         },
         error: function (errorMsg) {
             console.info("articleEdit-error:" + JSON.stringify(errorMsg));
-            artInfoEditEnd(false, "", ARTDELETE);
+            artInfoEditEnd(false, "", ARTEDIT);
         }
     });
 }

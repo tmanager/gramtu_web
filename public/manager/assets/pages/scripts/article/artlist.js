@@ -182,7 +182,7 @@ var ArtEdit = function() {
                 var article = $('.article-form').getFormData();
                 article.content = $("#article").summernote("code");
                 var oldimage = $("input[name=oldimage]").val();
-                if(article.image != oldimage) {
+                if(article.coverimage != oldimage) {
                     //先上传封面图，再增加文章
                     var formData = new FormData();
                     var fileInfo = $("#cover").get(0).files[0];
@@ -198,7 +198,7 @@ var ArtEdit = function() {
                         success: function (result) {
                             if (result.ret == '0000') {
                                 article.coverimage = result.url;
-                                if($("input[name=edittype]").val() === ARTICLEADD){
+                                if($("input[name=edittype]").val() == ARTICLEADD){
                                     articleAdd(article);
                                 }else{
                                     articleEdit(article);
@@ -228,9 +228,15 @@ var ArtEdit = function() {
             $(".modal-title").text("编辑文章");
             var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
             var artid = $("#art_table").dataTable().fnGetData(row).artid;
+            var art = new Object();
+            for(var i=0; i < artList.length; i++){
+                if(artid == artList[i].artid){
+                    art = artList[i];
+                }
+            }
             //获取该文章的内容
             var data = {artid: artid};
-            getArticleContent(data);
+            getArticleContent(data, art.coverimage);
         });
 
         $("#art_table").on('click', '#op_pre', function (e) {
@@ -240,7 +246,7 @@ var ArtEdit = function() {
             window.open(host + "/template?artid=" + artid);
         });
 
-        //新增角色
+        //新增文章
         $('#op_add').click(function() {
             validator.resetForm();
             $(".article-form").find(".has-error").removeClass("has-error");
@@ -314,6 +320,9 @@ function artInfoEditEnd(flg, result, type){
         case ARTDELETE:
             text = "删除";
             break;
+        case ARTEDIT:
+            text = "编辑";
+            break;
     }
     if(flg){
         if(result && result.retcode != SUCCESS){
@@ -363,7 +372,7 @@ $("#cover").change(function(){
 });
 
 
-function getArticleContentEnd(flg, result){
+function getArticleContentEnd(flg, result, temp){
     if(flg){
         if (result && result.retcode == SUCCESS) {
             var art = result.response;
@@ -371,10 +380,10 @@ function getArticleContentEnd(flg, result){
             var options = { jsonValue: art, exclude:exclude, isDebug: false};
             $(".article-form").initForm(options);
             //LOGO框赋值
-            $("#cover").siblings("img").attr("src", art.coverimage);
-            $("#cover").siblings("input[name=image], input[name=oldimage]").val(art.coverimage);
-            $("#article").summernote("code", art.article);
-            $("input[name=edittype]").val(ARTICLEADD);
+            $("#cover").siblings("img").attr("src", temp);
+            $("#cover").siblings("input[name=coverimage], input[name=oldimage]").val(temp);
+            $("#article").summernote("code", art.content);
+            $("input[name=edittype]").val(ARTEDIT);
             $('#edit_art').modal('show');
         }else{
             alertDialog("获取文章内容失败！");
