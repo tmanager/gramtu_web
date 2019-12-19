@@ -236,7 +236,7 @@ var ArtEdit = function() {
             }
             //获取该文章的内容
             var data = {artid: artid};
-            getArticleContent(data, art.coverimage);
+            getArticleContent(data, art);
         });
 
         $("#art_table").on('click', '#op_pre', function (e) {
@@ -376,12 +376,13 @@ function getArticleContentEnd(flg, result, temp){
     if(flg){
         if (result && result.retcode == SUCCESS) {
             var art = result.response;
+            art.artid = temp.artid;
             var exclude = ["article"];
             var options = { jsonValue: art, exclude:exclude, isDebug: false};
             $(".article-form").initForm(options);
             //LOGO框赋值
-            $("#cover").siblings("img").attr("src", temp);
-            $("#cover").siblings("input[name=coverimage], input[name=oldimage]").val(temp);
+            $("#cover").siblings("img").attr("src", temp.coverimage);
+            $("#cover").siblings("input[name=coverimage], input[name=oldimage]").val(temp.coverimage);
             $("#article").summernote("code", art.content);
             $("input[name=edittype]").val(ARTEDIT);
             $('#edit_art').modal('show');
