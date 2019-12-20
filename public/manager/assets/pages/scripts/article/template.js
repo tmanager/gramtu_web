@@ -9,14 +9,17 @@ var loginSucc = {
 
 jQuery(document).ready(function() {
     //获取文章内容
-    if(artid === "pre"){
-        var tmpdata = window.opener.tmpdata;
-        tmpdata.time = getNowFormatDate() + " " + getNowFormatTime();
-        tmpdata.editor = "xxx";
-        articleDataSet(tmpdata);
-    }else{
+    if(artid != ""){
         var data = {artid: artid};
         getArticleContent(data);
+    }
+    if(adid != ""){
+        var data = {adid: adid};
+        getAdContent(data);
+    }
+    if(servid != ""){
+        var data = {servid: servid};
+        getServContent(data);
     }
 
 });
@@ -36,9 +39,23 @@ function getArticleContentEnd(flg, result){
     }
 }
 
+
+function getAdContentEnd(flg, result){
+    getArticleContentEnd(flg, result)
+}
+
+function getServContentEnd(flg, result){
+    getArticleContentEnd(flg, result)
+}
+
 function articleDataSet(data){
     if(data != null){
-        $("#xian-title").html(data.title);
+        if(artid != "" || adid != ""){
+            $("#xian-title").html(data.title);
+        }
+        if(servid != ""){
+            $("#xian-title").html(data.servname);
+        }
         $("#time").html(dateTimeFormat(data.time));
         $("#editor").html(data.editor);
         $("#xian-body").html(data.content);

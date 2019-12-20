@@ -155,9 +155,13 @@ router.get('/release',function(req,res,next){
 
 router.get('/template',function(req,res,next){
     console.info(req.url);
-    var artid = req.query.artid;
+    var artid = req.query.artid || '';
+    var adid = req.query.adid || '';
+    var servid = req.query.servid || '';
     res.render('manager/article/template', {
-        artid: artid
+        artid: artid,
+        adid: adid,
+        servid: servid
     });
 });
 
@@ -274,7 +278,7 @@ router.get('/grammarian',function(req,res,next){
 
 
 // 广告管理
-router.get('/advertisement',function(req,res,next){
+router.get('/adv',function(req,res,next){
     console.info(req.url);
     var uname = req.query.username;
     if(req.session["ywtUname" + uname]){

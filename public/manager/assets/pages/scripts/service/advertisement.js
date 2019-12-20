@@ -4,6 +4,7 @@
 var adList = [];
 if (App.isAngularJsApp() === false) {
     jQuery(document).ready(function() {
+        $('#article').summernote({height: 300,lang:'zh-CN', maximumImageFileSize: 1024000});
         AdTable.init();
         AdEdit.init();
     });
@@ -41,9 +42,11 @@ var AdTable = function () {
                 { "data": null},
                 { "data": "adid", visible: false },
                 { "data": "title" },
-                { "data": "adurl" },
-                { "data": "innerurl" },
+                { "data": "adimage" },
+                { "data": "adtype" },
                 { "data": "sort" },
+                { "data": "time" },
+                { "data": "editor" },
                 { "data": null }
             ],
             columnDefs: [
@@ -61,21 +64,41 @@ var AdTable = function () {
                     }
                 },
                 {
-                    "targets":[3],
+                    "targets":[4],
                     "render": function(data, type, row, meta) {
-                        return "<img src='" + data + "' style='width: 100px; height:120px'>";
+                        return "<img src='" + data + "' style='width: 72px; height:20px'>";
+                    }
+                },
+                {
+                    "targets":[5],
+                    "render": function(data, type, row, meta) {
+                        var adType = "外部链接";
+                        if(data == "1"){
+                            adType = "原创文章";
+                        }
+                        return adType;
                     }
                 },
                 {
                     "targets":[7],
                     "render": function(data, type, row, meta) {
-                        if(!makeEdit(menu,loginSucc.functionlist,"#op_edit")) return '-';
-                        return '<a href="javascript:;" id="op_edit">编辑</a>'
+                        return dateTimeFormat(data);
+                    }
+                },
+                {
+                    "targets":[9],
+                    "render": function(data, type, row, meta) {
+                        var text = '<a href="javascript:;" id="op_pre">预览</a>';
+                        if(makeEdit(menu,loginSucc.functionlist,"#op_edit")){
+                            text += ' | <a href="javascript:;" id="op_edit">编辑</a>'
+                        }
+                        return text;
                     }
                 }
             ],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                $('td:eq(1)', nRow).attr('style', 'text-align: center;');
+                $('td', nRow).attr('style', 'vertical-align: middle; padding-left: 20px');
+                $('td:eq(0), td:eq(1), td:eq(3), td:eq(6), td:eq(8)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
             }
         });
         table.find('.group-checkable').change(function () {
@@ -120,14 +143,17 @@ var AdEdit = function() {
                     required: true
                 },
                 innerurl: {
-                    required: true,
+                    urlrequired:true,
                     url: true
+                },
+                article: {
+                    artrequired:true
                 },
                 sort: {
                     required: true,
                     digits: true
                 },
-                image: {
+                adimage: {
                     required: true
                 }
             },
@@ -137,13 +163,16 @@ var AdEdit = function() {
                     required: "图片必须输入"
                 },
                 innerurl: {
-                    required: "图片链接必须输入",
+                    urlrequired: "图片链接必须输入",
                 },
                 sort: {
                     required: "排序号必须输入",
                 },
-                image: {
+                adimage: {
                     required: "广告图片必须上传",
+                },
+                article: {
+                    artrequired:"文章内容必须输入"
                 }
             },
 
@@ -173,26 +202,45 @@ var AdEdit = function() {
                 form.submit();
             }
         });
+        jQuery.validator.addMethod("urlrequired", function(value, element) {
+            if($("#adtype").val() == "0"){
+                return value.replace(/\s+/g, "") != "";
+            }else{
+                return true;
+            }
+        },"该字段必须输入");
+
+        jQuery.validator.addMethod("artrequired", function(value, element) {
+            var content = $("#article").summernote("code");
+            if($("#adtype").val() == "1"){
+                return content.replace(/\s+/g, "") != "";
+            }else{
+                return true;
+            }
+        },"该字段必须输入");
+
         $('#register-btn').click(function() {
             btnDisable($('#register-btn'));
             if ($('.register-form').validate().form()) {
                 //先上传LOGO
                 var ad = $('.register-form').getFormData();
+                ad.content = $("#article").summernote("code");
                 //如果头像发生了变化，先上传头像
                 //获取原来的头像
                 var oldimage = $("input[name=oldimage]").val();
-                if(ad.image != oldimage) {
+                if(ad.adimage != oldimage) {
                     var formData = new FormData();
-                    formData.append('photo', $("#adurl").get(0).files[0]);
+                    var fileInfo = $("#adurl").get(0).files[0];
+                    formData.append('image', fileInfo);
                     $.ajax({
                         type: 'POST',
-                        url: webUrl,
+                        url: webUrl + "article/upload/image",
                         data: formData,
                         dataType: 'json',
                         contentType: false,
                         processData: false,
                         success: function (result) {
-                            if (result.ret) {
+                            if (result.ret == "0000") {
                                 ad.adurl = result.url;
                                 if($("input[name=edittype]").val() == ADADD){
                                     adAdd(ad);
@@ -208,7 +256,7 @@ var AdEdit = function() {
                         }
                     });
                 }else {
-                    if ($("input[name=edittype]").val() == SERVADD) {
+                    if ($("input[name=edittype]").val() == ADADD) {
                         adAdd(ad);
                     } else {
                         adEdit(ad);
@@ -224,9 +272,14 @@ var AdEdit = function() {
             $(":input",".register-form").not(":button,:reset,:submit,:radio").val("")
                 .removeAttr("checked")
                 .removeAttr("selected");
+            //select设定选择
+            $("#adtype").val("0");
+            $("#img-url").show();
+            $("#img-article").hide();
+            $("#article").summernote("code", "");
             //清空图片显示
-            $("#adurl").siblings("img").attr("src", "");
-            $("#adurl").siblings("input[name=image], input[name=oldimage]").val("");
+            $("#adurl").siblings("img").attr("src", "/public/manager/assets/pages/img/default.jpg");
+            $("#adurl").siblings("input[name=adimage], input[name=oldimage]").val("");
             $("input[name=edittype]").val(ADADD);
             $('#edit_ad').modal('show');
         });
@@ -245,13 +298,27 @@ var AdEdit = function() {
                     ad = adList[i];
                 }
             }
-            var options = { jsonValue: ad, exclude:exclude, isDebug: false};
-            $(".register-form").initForm(options);
-            //LOGO框赋值
-            $("#adurl").siblings("img").attr("src", ad.adurl);
-            $("#adurl").siblings("input[name=image], input[name=oldimage]").val(ad.adurl);
-            $("input[name=edittype]").val(ADEDIT);
-            $('#edit_ad').modal('show');
+            if(ad.adtype == 0){
+                var options = { jsonValue: ad, exclude:exclude, isDebug: false};
+                $(".register-form").initForm(options);
+                $("#img-url").show();
+                $("#img-article").hide();
+                //LOGO框赋值
+                $("#adurl").siblings("img").attr("src", ad.adimage);
+                $("#adurl").siblings("input[name=adimage], input[name=oldimage]").val(ad.adimage);
+                $("input[name=edittype]").val(ADEDIT);
+                $('#edit_ad').modal('show');
+            }else{
+                //获取该文章的内容
+                var data = {adid: adid};
+                getAdContent(data, ad)
+            }
+        });
+        $("#ad_table").on('click', '#op_pre', function (e) {
+            var host = window.location.protocol + "//" + window.location.host;
+            var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
+            var adid = $("#ad_table").dataTable().fnGetData(row).adid;
+            window.open(host + "/template?adid=" + adid);
         });
     };
 
@@ -297,6 +364,12 @@ function getAdDataEnd(flg, result, callback){
             alertDialog(result.retmsg);
         }
     }else{
+        /*adList = [
+            {adid:"1", adimage:"http://www.gramtu.com/group1/M00/00/00/rBBVI136KKKAQSSPAABaO2gQgo0198.png",time:"20191220111111",editor:"11",
+                title:"test1", sort:1, adtype:0, innerurl:"http://www.gramtu.com/group1/M00/00/00/rBBVI136KKKAQSSPAABaO2gQgo0198.png"},
+            {adid:"2", adimage:"http://www.gramtu.com/group1/M00/00/00/rBBVI136KKKAQSSPAABaO2gQgo0198.png",
+                title:"test1", sort:1, adtype:1, innerurl:"",time:"20191220111111",editor:"11",}
+        ];*/
         tableDataSet(0, 0, 0, [], callback);
         alertDialog("广告图片获取失败！");
     }
@@ -340,11 +413,11 @@ $("#ad_inquiry").on("click", function(){
 
 $("#adurl").change(function(){
     var file = $(this).get(0).files[0];
-    var inputObj = $(this).siblings("input[name=image]");
+    var inputObj = $(this).siblings("input[name=adimage]");
     var imgObj = $(this).siblings("img");
     inputObj.val(file);
     if(file == undefined){
-        imgObj.attr("src", "");
+        imgObj.attr("src", "/public/manager/assets/pages/img/default.jpg");
         inputObj.val("");
         return;
     }
@@ -355,13 +428,46 @@ $("#adurl").change(function(){
         if(img.width === 720 && img.height === 250){
             imgObj.attr("src", myimg);
         }else{
-            imgObj.attr("src", "");
+            imgObj.attr("src", "/public/manager/assets/pages/img/default.jpg");
             inputObj.val("");
             $("#adurl").val("");
             alertDialog("只能上传尺寸为720x250的图片！");
         }
-
     };
-
 });
 
+$("#adtype").change(function(){
+    if($(this).val() == 0){
+        $("#img-url").show();
+        $("#img-article").hide();
+        $("#article").summernote("code", "");
+    }else{
+        $("#img-url").hide();
+        $("#img-article").show();
+        $("#img-url input[name=innerurl]").val("");
+    }
+});
+
+function getAdContentEnd(flg, result, temp){
+    if(flg){
+        if (result && result.retcode == SUCCESS) {
+            var ad = result.response;
+            ad.adid = temp.adid;
+            var exclude = ["article"];
+            var options = { jsonValue: ad, exclude:exclude, isDebug: false};
+            $(".register-form").initForm(options);
+            $("#img-url").hide();
+            $("#img-article").show();
+            //LOGO框赋值
+            $("#adurl").siblings("img").attr("src", temp.adimage);
+            $("#adurl").siblings("input[name=adimage], input[name=oldimage]").val(temp.adimage);
+            $("#article").summernote("code", ad.content);
+            $("input[name=edittype]").val(ADEDIT);
+            $('#edit_ad').modal('show');
+        }else{
+            alertDialog("获取广告内容失败！");
+        }
+    }else{
+        alertDialog("获取广告内容失败！");
+    }
+}

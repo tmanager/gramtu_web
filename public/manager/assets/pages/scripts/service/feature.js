@@ -7,6 +7,7 @@
 var servList = [];
 if (App.isAngularJsApp() === false) {
     jQuery(document).ready(function() {
+        $('#article').summernote({height: 300,lang:'zh-CN', maximumImageFileSize: 1024000});
         ServTable.init();
         ServEdit.init();
     });
@@ -44,9 +45,11 @@ var ServTable = function () {
                 { "data": null},
                 { "data": "servid", visible: false },
                 { "data": "servname" },
-                { "data": "servlogo" },
-                { "data": "servlink" },
+                { "data": "servimage" },
+                { "data": "servtype" },
                 { "data": "sort" },
+                { "data": "time" },
+                { "data": "editor" },
                 { "data": null }
             ],
             columnDefs: [
@@ -66,24 +69,39 @@ var ServTable = function () {
                 {
                     "targets":[4],
                     "render": function(data, type, row, meta) {
-                        return "<img src='" + data + "' style='width: 100px; height:100px'>";
+                        return "<img src='" + data + "' style='width: 40px; height:40px'>";
                     }
                 },
                 {
                     "targets":[5],
                     "render": function(data, type, row, meta) {
-                        return "<a href='" + data + "'>";
+                        var servType = "外部链接";
+                        if(data == "1"){
+                            servType = "原创文章";
+                        }
+                        return servType;
                     }
-                },{
+                },
+                {
                     "targets":[7],
                     "render": function(data, type, row, meta) {
-                        if(!makeEdit(menu,loginSucc.functionlist,"#op_edit")) return '-';
-                        return '<a href="javascript:;" id="op_edit">编辑</a>'
+                        return dateTimeFormat(data);
+                    }
+                },
+                {
+                    "targets":[9],
+                    "render": function(data, type, row, meta) {
+                        var text = '<a href="javascript:;" id="op_pre">预览</a>';
+                        if(makeEdit(menu,loginSucc.functionlist,"#op_edit")){
+                            text += ' | <a href="javascript:;" id="op_edit">编辑</a>'
+                        }
+                        return text;
                     }
                 }
             ],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                $('td:eq(1)', nRow).attr('style', 'text-align: center;');
+                $('td', nRow).attr('style', 'vertical-align: middle; padding-left: 20px');
+                $('td:eq(0), td:eq(1), td:eq(3), td:eq(6), td:eq(8)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
             }
         });
         table.find('.group-checkable').change(function () {
@@ -128,13 +146,17 @@ var ServEdit = function() {
                     required: true
                 },
                 servlink: {
-                    required: true
+                    urlrequired:true,
+                    url:true
                 },
                 sort: {
                     required: true
                 },
-                image: {
+                servimage: {
                     required: true
+                },
+                article: {
+                    artrequired:true
                 }
             },
 
@@ -143,13 +165,16 @@ var ServEdit = function() {
                     required: "服务名必须输入"
                 },
                 servlink: {
-                    required: "链接地址必须输入"
+                    urlrequired: "链接地址必须输入"
                 },
                 sort: {
                     required: "排序号必须输入"
                 },
-                image: {
+                servimage: {
                     required: "服务LOGO必须上传"
+                },
+                article: {
+                    artrequired:"文章内容必须输入"
                 }
             },
 
@@ -179,27 +204,47 @@ var ServEdit = function() {
                 form.submit();
             }
         });
+        jQuery.validator.addMethod("urlrequired", function(value, element) {
+            if($("#servtype").val() == "0"){
+                return value.replace(/\s+/g, "") != "";
+            }else{
+                return true;
+            }
+        },"该字段必须输入");
+
+        jQuery.validator.addMethod("artrequired", function(value, element) {
+            var content = $("#article").summernote("code");
+            if($("#servtype").val() == "1"){
+                return content.replace(/\s+/g, "") != "";
+            }else{
+                return true;
+            }
+        },"该字段必须输入");
+
+
         $('#serv-add-confirm').click(function() {
             btnDisable($('#serv-add-confirm'));
             if ($('.register-form').validate().form()) {
                 //先上传LOGO
                 var serv = $('.register-form').getFormData();
+                serv.content = $("#article").summernote("code");
                 //如果头像发生了变化，先上传头像
                 //获取原来的头像
                 var oldimage = $("input[name=oldimage]").val();
-                if(serv.image != oldimage) {
+                if(serv.servimage != oldimage) {
                     var formData = new FormData();
-                    formData.append('photo', $("#servlogo").get(0).files[0]);
+                    var fileInfo = $("#servlogo").get(0).files[0];
+                    formData.append('image', fileInfo);
                     $.ajax({
                         type: 'POST',
-                        url: webUrl,
+                        url: webUrl + "article/upload/image",
                         data: formData,
                         dataType: 'json',
                         contentType: false,
                         processData: false,
                         success: function (result) {
                             if (result.ret) {
-                                serv.image = result.url;
+                                serv.servimage = result.url;
                                 if($("input[name=edittype]").val() == SERVADD){
                                     servAdd(serv);
                                 }else{
@@ -230,8 +275,14 @@ var ServEdit = function() {
             $(":input",".register-form").not(":button,:reset,:submit,:radio").val("")
                 .removeAttr("checked")
                 .removeAttr("selected");
+            //select设定选择
+            $("#servtype").val("0");
+            $("#img-url").show();
+            $("#img-article").hide();
+            $("#article").summernote("code", "");
             //清空LOGO显示
-            $("#servlogo").siblings("img").attr("src", "");
+            $("#servlogo").siblings("img").attr("src", "/public/manager/assets/pages/img/default.jpg");
+            $("#servlogo").siblings("input[name=servimage], input[name=oldimage]").val("");
             $("input[name=edittype]").val(SERVADD);
             $('#edit_serv').modal('show');
         });
@@ -250,13 +301,27 @@ var ServEdit = function() {
                     serv = servList[i];
                 }
             }
-            var options = { jsonValue: serv, exclude:exclude, isDebug: false};
-            $(".register-form").initForm(options);
-            //LOGO框赋值
-            $("#servlogo").siblings("img").attr("src", serv.servlogo);
-            $("#servlogo").siblings("input[name=image], input[name=oldimage]").val(serv.servlogo);
-            $("input[name=edittype]").val(SERVEDIT);
-            $('#edit_serv').modal('show');
+            if(serv.servtype == 0){
+                var options = { jsonValue: serv, exclude:exclude, isDebug: false};
+                $(".register-form").initForm(options);
+                $("#img-url").show();
+                $("#img-article").hide();
+                //LOGO框赋值
+                $("#servlogo").siblings("img").attr("src", serv.servimage);
+                $("#servlogo").siblings("input[name=servimage], input[name=oldimage]").val(serv.servimage);
+                $("input[name=edittype]").val(SERVEDIT);
+                $('#edit_serv').modal('show');
+            }else{
+                //获取该文章的内容
+                var data = {servid: servid};
+                getServContent(data, serv)
+            }
+        });
+        $("#serv_table").on('click', '#op_pre', function (e) {
+            var host = window.location.protocol + "//" + window.location.host;
+            var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
+            var adid = $("#serv_table").dataTable().fnGetData(row).servid;
+            window.open(host + "/template?servid=" + adid);
         });
     };
 
@@ -344,17 +409,63 @@ $("#serv_inquiry").on("click", function(){
 
 $("#servlogo").change(function(){
     var file = $(this).get(0).files[0];
-    var inputObj = $(this).siblings("input[name=image]");
+    var inputObj = $(this).siblings("input[name=servimage]");
     var imgObj = $(this).siblings("img");
     inputObj.val(file);
     if(file == undefined){
-        imgObj.attr("src", "");
+        imgObj.attr("src", "/public/manager/assets/pages/img/default.jpg");
         inputObj.val("");
         return;
     }
-    var render = new FileReader();
-    render.readAsDataURL(file);
-    render.onload = function(e) {
-        imgObj.attr("src", e.target.result);
+    var myimg = URL.createObjectURL(file);
+    var img = new Image();
+    img.src = myimg;
+    img.onload = function(){
+        if(img.width === 100 && img.height === 100){
+            imgObj.attr("src", myimg);
+        }else{
+            imgObj.attr("src", "/public/manager/assets/pages/img/default.jpg");
+            inputObj.val("");
+            $("#servlogo").val("");
+            alertDialog("只能上传尺寸为100x100的图片！");
+        }
+    };
+});
+
+
+$("#servtype").change(function(){
+    if($(this).val() == 0){
+        $("#img-url").show();
+        $("#img-article").hide();
+        $("#article").summernote("code", "");
+    }else{
+        $("#img-url").hide();
+        $("#img-article").show();
+        $("#img-url input[name=servlink]").val("");
     }
 });
+
+
+function getServContentEnd(flg, result, temp){
+    if(flg){
+        if (result && result.retcode == SUCCESS) {
+            var serv = result.response;
+            serv.servid = temp.servid;
+            var exclude = ["article"];
+            var options = { jsonValue: serv, exclude:exclude, isDebug: false};
+            $(".register-form").initForm(options);
+            $("#img-url").hide();
+            $("#img-article").show();
+            //LOGO框赋值
+            $("#servlogo").siblings("img").attr("src", temp.servimage);
+            $("#servlogo").siblings("input[name=servimage], input[name=oldimage]").val(temp.servimage);
+            $("#article").summernote("code", serv.content);
+            $("input[name=edittype]").val(SERVEDIT);
+            $('#edit_serv').modal('show');
+        }else{
+            alertDialog("获取特色服务内容失败！");
+        }
+    }else{
+        alertDialog("获取特色服务内容失败！");
+    }
+}

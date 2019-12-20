@@ -49,6 +49,26 @@ function logoutCheck(data){
     });
 }
 
+//获取广告信息
+function getServContent(data,callback){
+    $.ajax({
+        type:"post",
+        contentType:"application/json",
+        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url:webUrl + "serv/servdetail",  //请求发送到TestServlet处
+        data:sendMessageEdit(DEFAULT, data),
+        dataType:"json",      //返回数据形式为json
+        success:function(result){
+            console.info("getServContent:"+JSON.stringify(result));
+            getServContentEnd(true,result,callback);
+        },
+        error:function(errorMsg){
+            console.info("getServContent-error:"+ JSON.stringify(errorMsg));
+            getServContentEnd(false,"",callback);
+        }
+    });
+}
+
 //特色服务获取
 function servDataGet(data, callback){
     App.blockUI({target:'#lay_out',boxed:true});
@@ -551,6 +571,26 @@ function grammarianParaModify(data){
         error:function(errorMsg){
             console.info("grammarianParaModify-error:"+ JSON.stringify(errorMsg));
             grammarianParaModifyEnd(false,"");
+        }
+    });
+}
+
+//获取广告信息
+function getAdContent(data,callback){
+    $.ajax({
+        type:"post",
+        contentType:"application/json",
+        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url:webUrl + "ad/addetail",  //请求发送到TestServlet处
+        data:sendMessageEdit(DEFAULT, data),
+        dataType:"json",      //返回数据形式为json
+        success:function(result){
+            console.info("getAdContent:"+JSON.stringify(result));
+            getAdContentEnd(true,result,callback);
+        },
+        error:function(errorMsg){
+            console.info("getAdContent-error:"+ JSON.stringify(errorMsg));
+            getAdContentEnd(false,"",callback);
         }
     });
 }
