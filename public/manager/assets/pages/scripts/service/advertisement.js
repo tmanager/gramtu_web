@@ -98,7 +98,7 @@ var AdTable = function () {
             ],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                 $('td', nRow).attr('style', 'vertical-align: middle; padding-left: 20px');
-                $('td:eq(0), td:eq(1), td:eq(3), td:eq(6), td:eq(8)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
+                $('td:eq(0), td:eq(1), td:eq(3), td:eq(4), td:eq(6), td:eq(8)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
             }
         });
         table.find('.group-checkable').change(function () {
