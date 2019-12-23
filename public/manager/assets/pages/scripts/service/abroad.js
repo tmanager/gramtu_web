@@ -40,7 +40,7 @@ var AbroadTable = function () {
             columns: [//返回的json数据在这里填充，注意一定要与上面的<th>数量对应，否则排版出现扭曲
                 { "data": null},
                 { "data": null},
-                { "data": "id", visible: false },
+                { "data": "abroadid", visible: false },
                 { "data": "title" },
                 { "data": "time" },
                 { "data": "editor" },
