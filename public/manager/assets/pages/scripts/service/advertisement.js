@@ -318,7 +318,17 @@ var AdEdit = function() {
             var host = window.location.protocol + "//" + window.location.host;
             var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
             var adid = $("#ad_table").dataTable().fnGetData(row).adid;
-            window.open(host + "/template?adid=" + adid);
+            var ad = new Object();
+            for(var i=0; i < adList.length; i++){
+                if(adid == adList[i].adid){
+                    ad = adList[i];
+                }
+            }
+            if(ad.adtype == 0){
+                window.open(ad.innerurl);
+            }else{
+                window.open(host + "/template?adid=" + adid);
+            }
         });
     };
 
