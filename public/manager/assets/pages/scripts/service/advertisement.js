@@ -234,7 +234,7 @@ var AdEdit = function() {
                     formData.append('image', fileInfo);
                     $.ajax({
                         type: 'POST',
-                        url: webUrl + "article/upload/image",
+                        url: webUrl + "advert/upload/image",
                         data: formData,
                         dataType: 'json',
                         contentType: false,

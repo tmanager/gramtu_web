@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e0416b68-bc88-46c2-83a0-32f83919cda9" name="Default Changelist" comment="" />
+    <list default="true" id="e0416b68-bc88-46c2-83a0-32f83919cda9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manager/assets/pages/scripts/data.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/data.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manager/assets/pages/scripts/service/advertisement.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/service/advertisement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manager/assets/pages/scripts/service/feature.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/service/feature.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -9,6 +14,13 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="D:\pycharm\gramtu_web\.idea" />
+      </set>
+    </option>
   </component>
   <component name="ProjectId" id="1VMRI4Fj0qm7iKdg9dGj7PzYeDL" />
   <component name="ProjectViewState">
@@ -45,8 +57,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1577060894781</updated>
-      <workItem from="1577060896782" duration="354000" />
+      <workItem from="1577060896782" duration="5535000" />
     </task>
+    <task id="LOCAL-00001" summary="a">
+      <created>1577061387016</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1577061387016</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -57,17 +77,28 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_WIDTH">
+                <map>
+                  <entry key="2" value="274" />
+                  <entry key="3" value="226" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="a" />
+    <option name="LAST_COMMIT_MESSAGE" value="a" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="452" y="44" key="CommitChangelistDialog2" timestamp="1577061344383">
+    <state x="452" y="44" key="CommitChangelistDialog2" timestamp="1577061386509">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="452" y="44" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1577061344383" />
+    <state x="452" y="44" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1577061386509" />
     <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1577060937033">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -88,13 +119,21 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1894" height="257" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1577061080727" />
-    <state x="452" y="187" key="Vcs.Push.Dialog.v2" timestamp="1577061374257">
+    <state x="452" y="187" key="Vcs.Push.Dialog.v2" timestamp="1577061392239">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="452" y="187" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1577061374257" />
-    <state x="575" y="264" key="git4idea.merge.GitPullDialog" timestamp="1577061036698">
+    <state x="452" y="187" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1577061392239" />
+    <state x="544" y="8" width="831" height="1023" key="find.popup" timestamp="1577083310786">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="575" y="264" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1577061036698" />
+    <state x="544" y="8" width="831" height="1023" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577083310786" />
+    <state x="575" y="264" key="git4idea.merge.GitPullDialog" timestamp="1577079821467">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="575" y="264" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1577079821467" />
+    <state x="539" y="5" width="840" height="1034" key="search.everywhere.popup" timestamp="1577080632590">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="539" y="5" width="840" height="1034" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577080632590" />
   </component>
 </project>

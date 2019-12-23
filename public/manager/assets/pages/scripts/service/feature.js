@@ -237,7 +237,7 @@ var ServEdit = function() {
                     formData.append('image', fileInfo);
                     $.ajax({
                         type: 'POST',
-                        url: webUrl + "article/upload/image",
+                        url: webUrl + "feature/upload/image",
                         data: formData,
                         dataType: 'json',
                         contentType: false,
@@ -320,7 +320,7 @@ var ServEdit = function() {
         $("#serv_table").on('click', '#op_pre', function (e) {
             var host = window.location.protocol + "//" + window.location.host;
             var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
-            var adid = $("#serv_table").dataTable().fnGetData(row).servid;
+            var servid = $("#serv_table").dataTable().fnGetData(row).servid;
             var serv = new Object();
             for(var i=0; i < servList.length; i++){
                 if(servid == servList[i].servid){
