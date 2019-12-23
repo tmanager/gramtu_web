@@ -1,18 +1,18 @@
 /**
  * Created by Administrator on 2019/12/04.
  */
-var abroadList = [];
+var newbornList = [];
 if (App.isAngularJsApp() === false) {
     jQuery(document).ready(function() {
-        $('#abroad').summernote({height: 300,lang:'zh-CN', maximumImageFileSize: 1024000});
-        AbroadTable.init();
-        AbroadEdit.init();
+        $('#newborn').summernote({height: 300,lang:'zh-CN', maximumImageFileSize: 1024000});
+        NewbornTable.init();
+        NewbornEdit.init();
     });
 }
 
-var AbroadTable = function () {
+var NewbornTable = function () {
     var initTable = function () {
-        var table = $('#abroad_table');
+        var table = $('#newborn_table');
         pageLengthInit(table);
         table.dataTable({
             "language": TableLanguage,
@@ -35,12 +35,12 @@ var AbroadTable = function () {
                     startindex: data.start,
                     draw: data.draw
                 };
-                abroadDataGet(da, callback);
+                newbornDataGet(da, callback);
             },
             columns: [//返回的json数据在这里填充，注意一定要与上面的<th>数量对应，否则排版出现扭曲
                 { "data": null},
                 { "data": null},
-                { "data": "abroadid", visible: false },
+                { "data": "newbornid", visible: false },
                 { "data": "title" },
                 { "data": "time" },
                 { "data": "editor" },
@@ -111,9 +111,9 @@ var AbroadTable = function () {
     };
 }();
 
-var AbroadEdit = function() {
-    var handleAbroad = function() {
-        var validator = $('.abroad-form').validate({
+var NewbornEdit = function() {
+    var handleNewborn = function() {
+        var validator = $('.newborn-form').validate({
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
@@ -122,7 +122,7 @@ var AbroadEdit = function() {
                 title: {
                     required: true,
                 },
-                abroad: {
+                newborn: {
                     required: true,
                 }
             },
@@ -131,7 +131,7 @@ var AbroadEdit = function() {
                 title: {
                     required: "标题必须输入"
                 },
-                abroad: {
+                newborn: {
                     required: "内容必须输入",
                 }
             },
@@ -163,116 +163,116 @@ var AbroadEdit = function() {
             }
         });
 
-        $('#abroad_modify').click(function() {
-            btnDisable($('#abroad_modify'));
-            if ($('.abroad-form').validate().form()) {
-                var abroad = $('.abroad-form').getFormData();
-                abroad.content = $("#abroad").summernote("code");
-                if ($("input[name=edittype]").val() == ABROADADD) {
-                    abroadAdd(abroad);
+        $('#newborn_modify').click(function() {
+            btnDisable($('#newborn_modify'));
+            if ($('.newborn-form').validate().form()) {
+                var newborn = $('.newborn-form').getFormData();
+                newborn.content = $("#newborn").summernote("code");
+                if ($("input[name=edittype]").val() == NEWBORNADD) {
+                    newbornAdd(newborn);
                 } else {
-                    abroadEdit(abroad);
+                    newbornEdit(newborn);
                 }
             }
         });
-        //新增海外招募
+        //新增新人专区
         $('#op_add').click(function() {
             validator.resetForm();
-            $(".abroad-form").find(".has-error").removeClass("has-error");
-            $(".modal-title").text("新增海外招募");
-            $(":input",".abroad-form").not(":button,:reset,:submit,:radio").val("")
+            $(".newborn-form").find(".has-error").removeClass("has-error");
+            $(".modal-title").text("新增新人专区");
+            $(":input",".newborn-form").not(":button,:reset,:submit,:radio").val("")
                 .removeAttr("checked")
                 .removeAttr("selected");
-            $("#abroad").summernote("code", "");
-            $("input[name=edittype]").val(ABROADADD);
-            $('#edit_abroad').modal('show');
+            $("#newborn").summernote("code", "");
+            $("input[name=edittype]").val(NEWBORNADD);
+            $('#edit_newborn').modal('show');
         });
-        //编辑海外招募
-        $("#abroad_table").on('click', '#op_edit', function (e) {
+        //编辑新人专区
+        $("#newborn_table").on('click', '#op_edit', function (e) {
             e.preventDefault();
             validator.resetForm();
-            $(".abroad-form").find(".has-error").removeClass("has-error");
-            $(".modal-title").text("编辑海外招募");
+            $(".newborn-form").find(".has-error").removeClass("has-error");
+            $(".modal-title").text("编辑新人专区");
             var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
-            var abroadid = $("#abroad_table").dataTable().fnGetData(row).abroadid;
-            var abroad = new Object();
-            for(var i=0; i < abroadList.length; i++){
-                if(abroadid == abroadList[i].abroadid){
-                    abroad = abroadList[i];
+            var newbornid = $("#newborn_table").dataTable().fnGetData(row).newbornid;
+            var newborn = new Object();
+            for(var i=0; i < newbornList.length; i++){
+                if(newbornid == newbornList[i].newbornid){
+                    newborn = newbornList[i];
                 }
             }
             //获取该文章的内容
-            var data = {abroadid: abroadid};
-            getAbroadContent(data, abroad);
+            var data = {newbornid: newbornid};
+            getNewbornContent(data, newborn);
         });
-        $("#abroad_table").on('click', '#op_pre', function (e) {
+        $("#newborn_table").on('click', '#op_pre', function (e) {
             var host = window.location.protocol + "//" + window.location.host;
             var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
-            var abroadid = $("#abroad_table").dataTable().fnGetData(row).abroadid;
-            window.open(host + "/template?abroadid=" + abroadid);
+            var newbornid = $("#newborn_table").dataTable().fnGetData(row).newbornid;
+            window.open(host + "/template?newbornid=" + newbornid);
 
         });
     };
 
     return {
         init: function() {
-            handleAbroad();
+            handleNewborn();
         }
     };
 }();
 
-var AbroadDelete = function() {
+var NewbornDelete = function() {
     $('#op_del').click(function() {
         var len = $(".checkboxes:checked").length;
         if(len < 1){
             alertDialog("至少选中一项！");
         }else{
             var para = 1;
-            confirmDialog("数据删除后将不可恢复，您确定要删除吗？", AbroadDelete.deleteAbroad, para)
+            confirmDialog("数据删除后将不可恢复，您确定要删除吗？", NewbornDelete.deleteNewborn, para)
         }
     });
     return{
-        deleteAbroad: function(){
-            var abroadlist = {abroadidlist:[]};
+        deleteNewborn: function(){
+            var newbornlist = {newbornidlist:[]};
             $(".checkboxes:checked").parents("td").each(function () {
                 var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
-                var abroadid = $("#abroad_table").dataTable().fnGetData(row).id;
-                abroadlist.abroadidlist.push(abroadid);
+                var newbornid = $("#newborn_table").dataTable().fnGetData(row).id;
+                newbornlist.newbornidlist.push(newbornid);
             });
-            abroadDelete(abroadlist);
+            newbornDelete(newbornlist);
         }
     }
 }();
 
-function getAbroadDataEnd(flg, result, callback){
+function getNewbornDataEnd(flg, result, callback){
     App.unblockUI('#lay-out');
     if(flg){
         if (result && result.retcode == SUCCESS) {
             var res = result.response;
-            abroadList = res.abroadlist;
-            tableDataSet(res.draw, res.totalcount, res.totalcount, res.abroadlist, callback);
+            newbornList = res.newbornlist;
+            tableDataSet(res.draw, res.totalcount, res.totalcount, res.newbornlist, callback);
         }else{
             tableDataSet(0, 0, 0, [], callback);
             alertDialog(result.retmsg);
         }
     }else{
         tableDataSet(0, 0, 0, [], callback);
-        alertDialog("海外招募内容获取失败！");
+        alertDialog("新人专区内容获取失败！");
     }
 }
 
-function abroadInfoEditEnd(flg, result, type){
+function newbornInfoEditEnd(flg, result, type){
     var res = "失败";
     var text = "";
     var alert = "";
     switch (type){
-        case ABROADADD:
+        case NEWBORNADD:
             text = "新增";
             break;
-        case ABROADDELETE:
+        case NEWBORNDELETE:
             text = "删除";
             break;
-        case ABROADEDIT:
+        case NEWBORNEDIT:
             text = "编辑";
             break;
     }
@@ -282,35 +282,35 @@ function abroadInfoEditEnd(flg, result, type){
         }
         if (result && result.retcode == SUCCESS) {
             res = "成功";
-            AbroadTable.init();
-            $('#edit_abroad').modal('hide');
+            NewbornTable.init();
+            $('#edit_newborn').modal('hide');
         }
     }
-    if(alert == "") alert = text + "海外招募信息" + res + "！";
+    if(alert == "") alert = text + "新人专区信息" + res + "！";
     App.unblockUI('#lay-out');
     alertDialog(alert);
 }
 
-$("#abroad_inquiry").on("click", function(){
+$("#newborn_inquiry").on("click", function(){
     //用户查询
-    AbroadTable.init();
+    NewbornTable.init();
 });
 
-function getAbroadContentEnd(flg, result, temp){
+function getNewbornContentEnd(flg, result, temp){
     if(flg){
         if (result && result.retcode == SUCCESS) {
-            var abroad = result.response;
-            abroad.abroadid = temp.abroadid;
-            var exclude = ["abroad"];
-            var options = { jsonValue: abroad, exclude:exclude, isDebug: false};
+            var newborn = result.response;
+            newborn.newbornid = temp.newbornid;
+            var exclude = ["newborn"];
+            var options = { jsonValue: newborn, exclude:exclude, isDebug: false};
             $(".register-form").initForm(options);
-            $("#abroad").summernote("code", abroad.content);
-            $("input[name=edittype]").val(ABROADEDIT);
-            $('#edit_abroad').modal('show');
+            $("#newborn").summernote("code", newborn.content);
+            $("input[name=edittype]").val(NEWBORNEDIT);
+            $('#edit_newborn').modal('show');
         }else{
-            alertDialog("获取海外招募内容失败！");
+            alertDialog("获取新人专区内容失败！");
         }
     }else{
-        alertDialog("获取海外招募内容失败！");
+        alertDialog("获取新人专区内容失败！");
     }
 }

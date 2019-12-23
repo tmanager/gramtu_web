@@ -21,7 +21,14 @@ jQuery(document).ready(function() {
         var data = {servid: servid};
         getServContent(data);
     }
-
+    if(abroadid != ""){
+        var data = {abroadid: abroadid};
+        getAbroadContent(data);
+    }
+    if(newbornid != ""){
+        var data = {newbornid: newbornid};
+        getNewbornContent(data);
+    }
 });
 
 function getArticleContentEnd(flg, result){
@@ -48,9 +55,17 @@ function getServContentEnd(flg, result){
     getArticleContentEnd(flg, result)
 }
 
+function getAbroadContentEnd(flg, result){
+    getArticleContentEnd(flg, result)
+}
+
+function getNewbornContentEnd(flg, result){
+    getArticleContentEnd(flg, result)
+}
+
 function articleDataSet(data){
     if(data != null){
-        if(artid != "" || adid != ""){
+        if(artid != "" || adid != "" || abroadid != "" || newbornid != ""){
             $("#xian-title").html(data.title);
         }
         if(servid != ""){

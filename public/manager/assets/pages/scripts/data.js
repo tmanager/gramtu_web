@@ -682,6 +682,25 @@ function adDelete(data){
     });
 }
 
+//获取海外招募
+function getAbroadContent(data,callback){
+    $.ajax({
+        type:"post",
+        contentType:"application/json",
+        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url:webUrl + "abroad/abroaddetail",  //请求发送到TestServlet处
+        data:sendMessageEdit(DEFAULT, data),
+        dataType:"json",      //返回数据形式为json
+        success:function(result){
+            console.info("getAbroadContent:"+JSON.stringify(result));
+            getAbroadContentEnd(true,result,callback);
+        },
+        error:function(errorMsg){
+            console.info("getAbroadContent-error:"+ JSON.stringify(errorMsg));
+            getAbroadContentEnd(false,"",callback);
+        }
+    });
+}
 
 //获取海外招募列表
 function abroadDataGet(data,callback){
@@ -728,6 +747,27 @@ function abroadAdd(data){
     });
 }
 
+//编辑海外招募
+function abroadEdit(data){
+    App.blockUI({target:'#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "abroad/edit",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("abroadEdit:" + JSON.stringify(result));
+            abroadInfoEditEnd(true, result, ABROADEDIT);
+        },
+        error: function (errorMsg) {
+            console.info("abroadEdit-error:" + JSON.stringify(errorMsg));
+            abroadInfoEditEnd(false, "", ABROADEDIT);
+        }
+    });
+}
+
 //删除海外招募
 function abroadDelete(data){
     App.blockUI({target:'#lay-out',boxed: true});
@@ -745,6 +785,113 @@ function abroadDelete(data){
         error: function (errorMsg) {
             console.info("abroadDelete-error:" + JSON.stringify(errorMsg));
             abroadInfoEditEnd(false, "", ABROADDELETE);
+        }
+    });
+}
+
+//获取新人专区详情
+function getNewbornContent(data,callback){
+    $.ajax({
+        type:"post",
+        contentType:"application/json",
+        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url:webUrl + "newborn/newborndetail",  //请求发送到TestServlet处
+        data:sendMessageEdit(DEFAULT, data),
+        dataType:"json",      //返回数据形式为json
+        success:function(result){
+            console.info("getNewbornContent:"+JSON.stringify(result));
+            getNewbornContentEnd(true,result,callback);
+        },
+        error:function(errorMsg){
+            console.info("getNewbornContent-error:"+ JSON.stringify(errorMsg));
+            getNewbornContentEnd(false,"",callback);
+        }
+    });
+}
+
+//获取新人专区列表
+function newbornDataGet(data,callback){
+    App.blockUI({target: '#lay-out',boxed: true});
+    if(data == null){
+        data = {title: "", currentpage: "", pagesize: "", startindex: "0", draw: 1}
+    }
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "newborn/query",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("newbornDataGet:" + JSON.stringify(result));
+            getNewbornDataEnd(true, result, callback);
+        },
+        error: function (errorMsg) {
+            console.info("newbornDataGet-error:" + JSON.stringify(errorMsg));
+            getNewbornDataEnd(false, "", callback);
+        }
+    });
+}
+
+//新增新人专区
+function newbornAdd(data){
+    App.blockUI({target:'#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "newborn/add",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("newbornAdd:" + JSON.stringify(result));
+            newbornInfoEditEnd(true, result, NEWBORNADD);
+        },
+        error: function (errorMsg) {
+            console.info("newbornAdd-error:" + JSON.stringify(errorMsg));
+            newbornInfoEditEnd(false, "", NEWBORNADD);
+        }
+    });
+}
+
+//编辑新人专区
+function newbornEdit(data){
+    App.blockUI({target:'#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "newborn/edit",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("newbornEdit:" + JSON.stringify(result));
+            newbornInfoEditEnd(true, result, NEWBORNEDIT);
+        },
+        error: function (errorMsg) {
+            console.info("newbornEdit-error:" + JSON.stringify(errorMsg));
+            newbornInfoEditEnd(false, "", NEWBORNEDIT);
+        }
+    });
+}
+
+//删除新人专区
+function newbornDelete(data){
+    App.blockUI({target:'#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "newborn/delete",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("newbornDelete:" + JSON.stringify(result));
+            newbornInfoEditEnd(true, result, NEWBORNDELETE);
+        },
+        error: function (errorMsg) {
+            console.info("newbornDelete-error:" + JSON.stringify(errorMsg));
+            newbornInfoEditEnd(false, "", NEWBORNDELETE);
         }
     });
 }

@@ -158,10 +158,14 @@ router.get('/template',function(req,res,next){
     var artid = req.query.artid || '';
     var adid = req.query.adid || '';
     var servid = req.query.servid || '';
+    var abroadid = req.query.abroadid || '';
+    var newbornid = req.query.newbornid || '';
     res.render('manager/article/template', {
         artid: artid,
         adid: adid,
-        servid: servid
+        servid: servid,
+        abroadid: abroadid,
+        newbornid: newbornid
     });
 });
 
@@ -297,6 +301,20 @@ router.get('/abroad',function(req,res,next){
     var uname = req.query.username;
     if(req.session["ywtUname" + uname]){
         res.render('manager/service/abroad',{
+            menu:req.url.substr(1),
+            loginsucc:req.session["ywtLogin" + uname]
+        });
+    }else{
+        res.redirect('/');
+    }
+});
+
+// 新人专区
+router.get('/newborn',function(req,res,next){
+    console.info(req.url);
+    var uname = req.query.username;
+    if(req.session["ywtUname" + uname]){
+        res.render('manager/service/newborn',{
             menu:req.url.substr(1),
             loginsucc:req.session["ywtLogin" + uname]
         });
