@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e0416b68-bc88-46c2-83a0-32f83919cda9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/logs/access-.2019-12-24.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/manager/assets/pages/scripts/data.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/data.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/manager/assets/pages/scripts/service/abroad.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/service/abroad.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manager/assets/pages/scripts/service/feature.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/service/feature.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,12 +24,16 @@
     </option>
   </component>
   <component name="ProjectId" id="1VMRI4Fj0qm7iKdg9dGj7PzYeDL" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -56,7 +62,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1577060894781</updated>
-      <workItem from="1577060896782" duration="7627000" />
+      <workItem from="1577060896782" duration="8959000" />
+      <workItem from="1577146250278" duration="4113000" />
     </task>
     <task id="LOCAL-00001" summary="a">
       <created>1577061387016</created>
@@ -72,7 +79,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577083416664</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="增加海外招募">
+      <created>1577086126786</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1577086126786</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -90,6 +104,7 @@
                   <entry key="3" value="226" />
                 </map>
               </option>
+              <option name="COLUMN_ORDER" />
             </State>
           </value>
         </entry>
@@ -97,50 +112,52 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="a" />
     <MESSAGE value="增加特色服务查询功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加特色服务查询功能" />
+    <MESSAGE value="增加海外招募" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加海外招募" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="452" y="44" key="CommitChangelistDialog2" timestamp="1577083416000">
+    <state x="452" y="44" key="CommitChangelistDialog2" timestamp="1577086126176">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="452" y="44" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1577083416000" />
+    <state x="452" y="44" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1577086126176" />
     <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1577060937033">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1577060937033" />
-    <state width="1894" height="257" key="GridCell.Tab.0.bottom" timestamp="1577061080727">
+    <state width="1894" height="257" key="GridCell.Tab.0.bottom" timestamp="1577097867316">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1894" height="257" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1577061080727" />
-    <state width="1894" height="257" key="GridCell.Tab.0.center" timestamp="1577061080727">
+    <state width="1894" height="257" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1577097867316" />
+    <state width="1894" height="257" key="GridCell.Tab.0.center" timestamp="1577097867316">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1894" height="257" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1577061080727" />
-    <state width="1894" height="257" key="GridCell.Tab.0.left" timestamp="1577061080727">
+    <state width="1894" height="257" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1577097867316" />
+    <state width="1894" height="257" key="GridCell.Tab.0.left" timestamp="1577097867316">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1894" height="257" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1577061080727" />
-    <state width="1894" height="257" key="GridCell.Tab.0.right" timestamp="1577061080727">
+    <state width="1894" height="257" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1577097867316" />
+    <state width="1894" height="257" key="GridCell.Tab.0.right" timestamp="1577097867316">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1894" height="257" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1577061080727" />
-    <state x="452" y="187" key="Vcs.Push.Dialog.v2" timestamp="1577083423738">
+    <state width="1894" height="257" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1577097867316" />
+    <state x="452" y="187" key="Vcs.Push.Dialog.v2" timestamp="1577086131365">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="452" y="187" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1577083423738" />
+    <state x="452" y="187" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1577086131365" />
     <state x="544" y="8" width="831" height="1023" key="find.popup" timestamp="1577083310786">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="544" y="8" width="831" height="1023" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577083310786" />
-    <state x="575" y="264" key="git4idea.merge.GitPullDialog" timestamp="1577079821467">
+    <state x="575" y="264" key="git4idea.merge.GitPullDialog" timestamp="1577147629591">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="575" y="264" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1577079821467" />
-    <state x="539" y="5" width="840" height="1034" key="search.everywhere.popup" timestamp="1577085136182">
+    <state x="575" y="264" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1577147629591" />
+    <state x="539" y="5" width="840" height="1034" key="search.everywhere.popup" timestamp="1577151564188">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="539" y="5" width="840" height="1034" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577085136182" />
+    <state x="539" y="5" width="840" height="1034" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577151564188" />
   </component>
 </project>

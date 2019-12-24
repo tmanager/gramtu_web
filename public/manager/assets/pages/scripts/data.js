@@ -55,7 +55,7 @@ function getServContent(data,callback){
         type:"post",
         contentType:"application/json",
         async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url:webUrl + "serv/servdetail",  //请求发送到TestServlet处
+        url:webUrl + "feature/servdetail",  //请求发送到TestServlet处
         data:sendMessageEdit(DEFAULT, data),
         dataType:"json",      //返回数据形式为json
         success:function(result){
@@ -100,7 +100,7 @@ function servDelete(data){
         type: "post",
         contentType: "application/json",
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "servdelete",    //请求发送到TestServlet处
+        url: webUrl + "feature/servdelete",    //请求发送到TestServlet处
         data: sendMessageEdit(DEFAULT, data),
         dataType: "json",        //返回数据形式为json
         success: function (result) {
@@ -121,7 +121,7 @@ function servAdd(data){
         type: "post",
         contentType: "application/json",
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "servadd",    //请求发送到TestServlet处
+        url: webUrl + "feature/servadd",    //请求发送到TestServlet处
         data: sendMessageEdit(DEFAULT, data),
         dataType: "json",        //返回数据形式为json
         success: function (result) {
@@ -142,7 +142,7 @@ function servEdit(data){
         type: "post",
         contentType: "application/json",
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "servedit",    //请求发送到TestServlet处
+        url: webUrl + "feature/servedit",    //请求发送到TestServlet处
         data: sendMessageEdit(DEFAULT, data),
         dataType: "json",        //返回数据形式为json
         success: function (result) {
@@ -688,7 +688,7 @@ function getAbroadContent(data,callback){
         type:"post",
         contentType:"application/json",
         async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url:webUrl + "abroad/abroaddetail",  //请求发送到TestServlet处
+        url:webUrl + "abroad/detail",  //请求发送到TestServlet处
         data:sendMessageEdit(DEFAULT, data),
         dataType:"json",      //返回数据形式为json
         success:function(result){

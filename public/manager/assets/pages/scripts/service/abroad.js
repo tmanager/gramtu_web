@@ -236,7 +236,7 @@ var AbroadDelete = function() {
             var abroadlist = {abroadidlist:[]};
             $(".checkboxes:checked").parents("td").each(function () {
                 var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
-                var abroadid = $("#abroad_table").dataTable().fnGetData(row).id;
+                var abroadid = $("#abroad_table").dataTable().fnGetData(row).abroadid;
                 abroadlist.abroadidlist.push(abroadid);
             });
             abroadDelete(abroadlist);

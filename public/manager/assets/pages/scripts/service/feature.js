@@ -330,7 +330,7 @@ var ServEdit = function() {
             if(serv.servtype == 0){
                 window.open(serv.servlink);
             }else{
-                window.open(host + "/template?servid=" + adid);
+                window.open(host + "/template?servid=" + servid);
             }
 
         });
