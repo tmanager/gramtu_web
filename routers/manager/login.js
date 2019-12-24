@@ -323,4 +323,31 @@ router.get('/newborn',function(req,res,next){
     }
 });
 
+// 查重参数
+router.get('/tprice',function(req,res,next){
+    console.info(req.url);
+    var uname = req.query.username;
+    if(req.session["ywtUname" + uname]){
+        res.render('manager/param/tprice',{
+            menu:req.url.substr(1),
+            loginsucc:req.session["ywtLogin" + uname]
+        });
+    }else{
+        res.redirect('/');
+    }
+});
+
+// 语法检测参数
+router.get('/gprice',function(req,res,next){
+    console.info(req.url);
+    var uname = req.query.username;
+    if(req.session["ywtUname" + uname]){
+        res.render('manager/param/gprice',{
+            menu:req.url.substr(1),
+            loginsucc:req.session["ywtLogin" + uname]
+        });
+    }else{
+        res.redirect('/');
+    }
+});
 module.exports = router;

@@ -535,6 +535,12 @@ function pageLengthInit(id){
 }
 
 function discountNumberChange(data) {
+    if(data == "1"){
+        return "无折扣";
+    }
+    if(data == "0"){
+        return "0折";
+    }
     var chword = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
     data = data.replace(/[0.]/g, "");
     var str = "";

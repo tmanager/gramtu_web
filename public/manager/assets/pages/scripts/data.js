@@ -350,93 +350,6 @@ function coupDelete(data){
     });
 }
 
-//价格列表获取
-function priceDataGet(data,callback){
-    App.blockUI({target:'#lay_out',boxed:true});
-    if(data == null){
-        data = {protype:"", pagesize: "",currentpage:"", startindex: "0", draw: 1}
-    }
-    $.ajax({
-        type:"post",
-        contentType:"application/json",
-        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url:userHostUrl + "pricequery",  //请求发送到TestServlet处
-        data:sendMessageEdit(DEFAULT, data),
-        dataType:"json",      //返回数据形式为json
-        success:function(result){
-            console.info("priceDataGet:"+JSON.stringify(result));
-            getPriceDataEnd(true,result,callback);
-        },
-        error:function(errorMsg){
-            console.info("priceDataGet-error:"+ JSON.stringify(errorMsg));
-            getPriceDataEnd(false,"",callback);
-        }
-    });
-}
-
-//价格新增
-function priceAdd(data){
-    App.blockUI({target:'#lay-out',boxed: true});
-    $.ajax({
-        type: "post",
-        contentType: "application/json",
-        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "priceadd",    //请求发送到TestServlet处
-        data: sendMessageEdit(DEFAULT, data),
-        dataType: "json",        //返回数据形式为json
-        success: function (result) {
-            console.info("priceAdd:" + JSON.stringify(result));
-            priceInfoEditEnd(true, result, PRICEADD);
-        },
-        error: function (errorMsg) {
-            console.info("priceAdd-error:" + JSON.stringify(errorMsg));
-            priceInfoEditEnd(false, "", PRICEADD);
-        }
-    });
-}
-
-//编辑价格
-function priceEdit(data){
-    App.blockUI({target:'#lay-out',boxed: true});
-    $.ajax({
-        type: "post",
-        contentType: "application/json",
-        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "priceedit",    //请求发送到TestServlet处
-        data: sendMessageEdit(DEFAULT, data),
-        dataType: "json",        //返回数据形式为json
-        success: function (result) {
-            console.info("priceEdit:" + JSON.stringify(result));
-            priceInfoEditEnd(true, result, PRICEEDIT);
-        },
-        error: function (errorMsg) {
-            console.info("priceEdit-error:" + JSON.stringify(errorMsg));
-            priceInfoEditEnd(false, "", PRICEEDIT);
-        }
-    });
-}
-
-//删除价格
-function priceDelete(data){
-    App.blockUI({target:'#lay-out',boxed: true});
-    $.ajax({
-        type: "post",
-        contentType: "application/json",
-        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "pricedelete",    //请求发送到TestServlet处
-        data: sendMessageEdit(DEFAULT, data),
-        dataType: "json",        //返回数据形式为json
-        success: function (result) {
-            console.info("priceDelete:" + JSON.stringify(result));
-            priceInfoEditEnd(true, result, PRICEDELETE);
-        },
-        error: function (errorMsg) {
-            console.info("priceDelete-error:" + JSON.stringify(errorMsg));
-            priceInfoEditEnd(false, "", PRICEDELETE);
-        }
-    });
-}
-
 /**
  * 国际版参数获取.
  */
@@ -896,3 +809,94 @@ function newbornDelete(data){
     });
 }
 
+/**
+ * 查重参数获取.
+ */
+function tPriceParaGet(data){
+    App.blockUI({target:'#lay_out',boxed:true});
+    $.ajax({
+        type:"post",
+        contentType:"application/json",
+        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "tprice/param/query",  //请求发送到TestServlet处
+        data:sendMessageEdit(DEFAULT, data),
+        dataType:"json",      //返回数据形式为json
+        success:function(result){
+            console.info("tPriceParaGet:"+JSON.stringify(result));
+            getTPriceParaEnd(true,result);
+        },
+        error:function(errorMsg){
+            console.info("tPriceParaGet-error:"+ JSON.stringify(errorMsg));
+            getTPriceParaEnd(false,"");
+        }
+    });
+}
+
+/**
+ * 查重参数修改.
+ */
+function tPriceParaModify(data){
+    App.blockUI({target:'#lay_out',boxed:true});
+    $.ajax({
+        type:"post",
+        contentType:"application/json",
+        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url:webUrl + "tprice/para/upd",  //请求发送到TestServlet处
+        data:sendMessageEdit(DEFAULT, data),
+        dataType:"json",      //返回数据形式为json
+        success:function(result){
+            console.info("tPriceParaModify:"+JSON.stringify(result));
+            tPriceParaModifyEnd(true,result);
+        },
+        error:function(errorMsg){
+            console.info("tPriceParaModify-error:"+ JSON.stringify(errorMsg));
+            tPriceParaModifyEnd(false,"");
+        }
+    });
+}
+
+/**
+ * 语法检测参数获取.
+ */
+function gPriceParaGet(data){
+    App.blockUI({target:'#lay_out',boxed:true});
+    $.ajax({
+        type:"post",
+        contentType:"application/json",
+        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "gprice/param/query",  //请求发送到TestServlet处
+        data:sendMessageEdit(DEFAULT, data),
+        dataType:"json",      //返回数据形式为json
+        success:function(result){
+            console.info("gPriceParaGet:"+JSON.stringify(result));
+            getGPriceParaEnd(true,result);
+        },
+        error:function(errorMsg){
+            console.info("gPriceParaGet-error:"+ JSON.stringify(errorMsg));
+            getGPriceParaEnd(false,"");
+        }
+    });
+}
+
+/**
+ * 语法检测参数修改.
+ */
+function gPriceParaModify(data){
+    App.blockUI({target:'#lay_out',boxed:true});
+    $.ajax({
+        type:"post",
+        contentType:"application/json",
+        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url:webUrl + "gprice/para/upd",  //请求发送到TestServlet处
+        data:sendMessageEdit(DEFAULT, data),
+        dataType:"json",      //返回数据形式为json
+        success:function(result){
+            console.info("gPriceParaModify:"+JSON.stringify(result));
+            gPriceParaModifyEnd(true,result);
+        },
+        error:function(errorMsg){
+            console.info("gPriceParaModify-error:"+ JSON.stringify(errorMsg));
+            gPriceParaModifyEnd(false,"");
+        }
+    });
+}
