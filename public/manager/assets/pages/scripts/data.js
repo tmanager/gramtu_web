@@ -795,7 +795,7 @@ function getNewbornContent(data,callback){
         type:"post",
         contentType:"application/json",
         async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url:webUrl + "newborn/newborndetail",  //请求发送到TestServlet处
+        url:webUrl + "newborn/detail",  //请求发送到TestServlet处
         data:sendMessageEdit(DEFAULT, data),
         dataType:"json",      //返回数据形式为json
         success:function(result){
