@@ -303,7 +303,7 @@ function getNewbornContentEnd(flg, result, temp){
             newborn.newbornid = temp.newbornid;
             var exclude = ["newborn"];
             var options = { jsonValue: newborn, exclude:exclude, isDebug: false};
-            $(".register-form").initForm(options);
+            $(".newborn-form").initForm(options);
             $("#newborn").summernote("code", newborn.content);
             $("input[name=edittype]").val(NEWBORNEDIT);
             $('#edit_newborn').modal('show');

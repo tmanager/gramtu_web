@@ -303,7 +303,7 @@ function getAbroadContentEnd(flg, result, temp){
             abroad.abroadid = temp.abroadid;
             var exclude = ["abroad"];
             var options = { jsonValue: abroad, exclude:exclude, isDebug: false};
-            $(".register-form").initForm(options);
+            $(".abroad-form").initForm(options);
             $("#abroad").summernote("code", abroad.content);
             $("input[name=edittype]").val(ABROADEDIT);
             $('#edit_abroad').modal('show');
