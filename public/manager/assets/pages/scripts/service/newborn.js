@@ -236,7 +236,7 @@ var NewbornDelete = function() {
             var newbornlist = {newbornidlist:[]};
             $(".checkboxes:checked").parents("td").each(function () {
                 var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
-                var newbornid = $("#newborn_table").dataTable().fnGetData(row).id;
+                var newbornid = $("#newborn_table").dataTable().fnGetData(row).newbornid;
                 newbornlist.newbornidlist.push(newbornid);
             });
             newbornDelete(newbornlist);
