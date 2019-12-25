@@ -135,7 +135,7 @@ function gPriceParaModifyEnd(flg, result, type){
             alert = result.retmsg;
         }
         if (result && result.retcode == SUCCESS) {
-            turnitinParaGet({});
+            gPriceParaGet({});
             res = "成功！";
         }
     }
