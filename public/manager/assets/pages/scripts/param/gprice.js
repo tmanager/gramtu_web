@@ -20,25 +20,31 @@ var GPriceEdit = function() {
             rules: {
                 price: {
                     required: true,
-                    number: true
+                    number: true,
+                    pointlength: 2
                 },
                 wordnum: {
                     required: true,
-                    digits: true
+                    number: true,
+                    nopoint:true,
                 },
                 discount: {
                     number: true,
-                    range: [0, 1],
-                    maxlength: 4
+                    range: [0, 10],
+                    pointlength: 1
                 }
             },
 
             messages: {
                 price: {
                     required: "价格必须输入",
+                    pointlength: "小数点后最多为2位！"
                 },
                 wordnum: {
                     required: "字数必须输入",
+                },
+                discount: {
+                    pointlength: "小数点后最多为1位！"
                 }
             },
 
@@ -68,22 +74,40 @@ var GPriceEdit = function() {
                 form.submit();
             }
         });
+        jQuery.validator.addMethod("pointlength",function(value, element, param){
+            var returnVal = true;
+            var ArrMen= value.split(".");    //截取字符串
+            if(ArrMen.length == 2){
+                if(ArrMen[1].length > param){    //判断小数点后面的字符串长度
+                    returnVal = false;
+                    return false;
+                }
+            }
+            return returnVal;
+        },"");         //验证错误信息
 
+        jQuery.validator.addMethod("nopoint",function(value, element, param){
+            var returnVal = true;
+            var ArrMen= value.split(".");    //截取字符串
+            if(ArrMen.length > 1){
+                return false
+            }
+            return returnVal;
+        },"该字段必须输入整数！");         //验证错误信息
 
         $('#para_modify').click(function(e) {
+            e.preventDefault();
             if ($('.turnitin-form').validate().form()) {
-                e.preventDefault();
                 var data = $('.turnitin-form').getFormData();
                 gPriceParaModify(data);
             }
         });
 
         $('#para_pre').click(function(e) {
+            e.preventDefault();
             if ($('.turnitin-form').validate().form()) {
-                e.preventDefault();
                 var data = $('.turnitin-form').getFormData();
-                if(data.discount == "") data.discount = 1;
-                var disPrice = Number((data.price * data.discount).toFixed(2));
+                var disPrice = Number((data.price * discountNumber(data.discount)).toFixed(2));
                 $("#price").html(data.price + "元/" + data.wordnum + "字");
                 $("#discount").html(discountNumberChange(data.discount));
                 $("#disprice").html(disPrice + "元/" + data.wordnum + "字");

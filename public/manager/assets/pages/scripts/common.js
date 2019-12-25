@@ -535,22 +535,18 @@ function pageLengthInit(id){
 }
 
 function discountNumberChange(data) {
-    if(data == "1"){
+    if(data == "10" || data == "" ){
         return "无折扣";
     }
     if(data == "0"){
         return "0折";
     }
-    var chword = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-    data = data.replace(/[0.]/g, "");
-    var str = "";
-    if (data !== "") {
-        for (var i = 0; i < data.length; i++) {
-            str += chword[data.charAt(i)]
-        }
-        str += "折";
-    }else{
-        str = "无折扣";
+    return data + "折";
+}
+
+function discountNumber(data) {
+    if(data == "10" || data == "" ){
+        return 1;
     }
-    return str;
+    return Number(data / 10);
 }
