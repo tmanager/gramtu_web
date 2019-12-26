@@ -136,7 +136,7 @@ function tPriceParaModifyEnd(flg, result, type){
             alert = result.retmsg;
         }
         if (result && result.retcode == SUCCESS) {
-            turnitinParaGet({});
+            tPriceParaGet({});
             res = "成功！";
         }
     }
