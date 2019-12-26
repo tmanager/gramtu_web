@@ -6,10 +6,15 @@ var router = express.Router();
 
 
 router.get('/',function(req,res,next){
+    console.info(req.url);
+    res.render('manager/gramtu');
+});
+
+router.get('/login',function(req,res,next){
     res.render('manager/login');
 });
 
-router.post('/login',function(req,res,next){
+router.post('/main',function(req,res,next){
     var uname = req.body.username;
     req.session["ywtUname" + uname] = uname;
     req.session["ywtLogin" + uname] = req.body.loginsucc;
@@ -26,7 +31,7 @@ router.get('/logout',function(req,res){
     req.session["ywtUname" + uname] = "";
     req.session["ywtLogin" + uname] = "";
     //req.session.destroy();
-    res.redirect('/');
+    res.redirect('/login');
 });
 
 
@@ -39,7 +44,7 @@ router.get('/main',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -53,7 +58,7 @@ router.get('/user',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -67,7 +72,7 @@ router.get('/userpower',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -81,7 +86,7 @@ router.get('/rolepower',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -96,7 +101,7 @@ router.get('/role',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -109,7 +114,7 @@ router.get('/password',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -122,7 +127,7 @@ router.get('/organ',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -135,7 +140,7 @@ router.get('/feature',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -148,7 +153,7 @@ router.get('/release',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -179,7 +184,7 @@ router.get('/artlist',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -192,7 +197,7 @@ router.get('/menu',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -206,7 +211,7 @@ router.get('/coupon',function(req,res,next){
             loginsucc: req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -220,7 +225,7 @@ router.get('/price',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -234,7 +239,7 @@ router.get('/updateuser',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -248,7 +253,7 @@ router.get('/turnitin',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -262,7 +267,7 @@ router.get('/turnitinuk',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -276,7 +281,7 @@ router.get('/grammarian',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -291,7 +296,7 @@ router.get('/adv',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -305,7 +310,7 @@ router.get('/abroad',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -319,7 +324,7 @@ router.get('/newborn',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -333,7 +338,7 @@ router.get('/tprice',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -347,7 +352,7 @@ router.get('/gprice',function(req,res,next){
             loginsucc:req.session["ywtLogin" + uname]
         });
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 module.exports = router;

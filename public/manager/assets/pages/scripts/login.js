@@ -164,7 +164,7 @@ function userFunctionListEnd(flg, result){
 function loginSubmit(data){
     console.info(data);
     var form = $(".login-form");
-    form[0].action = "login";
+    form[0].action = "main";
     form.append($("<input/>").attr("type", "hidden").attr("name", "loginsucc").attr("value", JSON.stringify(data)));
     form.submit();
     App.unblockUI('.login-container');
