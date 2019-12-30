@@ -518,7 +518,7 @@ function adDataGet(data,callback){
         type: "post",
         contentType: "application/json",
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-            url: webUrl + "advert/query",    //请求发送到TestServlet处
+        url: webUrl + "advert/query",    //请求发送到TestServlet处
         data: sendMessageEdit(DEFAULT, data),
         dataType: "json",        //返回数据形式为json
         success: function (result) {
@@ -897,6 +897,72 @@ function gPriceParaModify(data){
         error:function(errorMsg){
             console.info("gPriceParaModify-error:"+ JSON.stringify(errorMsg));
             gPriceParaModifyEnd(false,"");
+        }
+    });
+}
+
+
+//获取人工服务详情
+function getManmadeContent(data,callback){
+    $.ajax({
+        type:"post",
+        contentType:"application/json",
+        async:true,        //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url:webUrl + "manmade/detail",  //请求发送到TestServlet处
+        data:sendMessageEdit(DEFAULT, data),
+        dataType:"json",      //返回数据形式为json
+        success:function(result){
+            console.info("getManmadeContent:"+JSON.stringify(result));
+            getManmadeContentEnd(true,result,callback);
+        },
+        error:function(errorMsg){
+            console.info("getManmadeContent-error:"+ JSON.stringify(errorMsg));
+            getManmadeContentEnd(false,"",callback);
+        }
+    });
+}
+
+//获取人工服务列表
+function manmadeDataGet(data,callback){
+    App.blockUI({target: '#lay-out',boxed: true});
+    if(data == null){
+        data = {title: "", currentpage: "", pagesize: "", startindex: "0", draw: 1}
+    }
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "manmade/query",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("manmadeDataGet:" + JSON.stringify(result));
+            getManmadeDataEnd(true, result, callback);
+        },
+        error: function (errorMsg) {
+            console.info("manmadeDataGet-error:" + JSON.stringify(errorMsg));
+            getManmadeDataEnd(false, "", callback);
+        }
+    });
+}
+
+//编辑新人专区
+function manmadeEdit(data){
+    App.blockUI({target:'#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "manmade/edit",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("manmadeEdit:" + JSON.stringify(result));
+            manmadeInfoEditEnd(true, result, MANMADEEDIT);
+        },
+        error: function (errorMsg) {
+            console.info("manmadeEdit-error:" + JSON.stringify(errorMsg));
+            manmadeInfoEditEnd(false, "", MANMADEEDIT);
         }
     });
 }

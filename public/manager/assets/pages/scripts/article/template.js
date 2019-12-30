@@ -29,6 +29,10 @@ jQuery(document).ready(function() {
         var data = {newbornid: newbornid};
         getNewbornContent(data);
     }
+    if(manmadeid != ""){
+        var data = {manmadeid: manmadeid};
+        getManmadeContent(data);
+    }
 });
 
 function getArticleContentEnd(flg, result){
@@ -65,7 +69,8 @@ function getNewbornContentEnd(flg, result){
 
 function articleDataSet(data){
     if(data != null){
-        if(artid != "" || adid != "" || abroadid != "" || newbornid != ""){
+        if(artid != "" || adid != "" || abroadid != "" ||
+            newbornid != "" || manmadeid != ""){
             $("#xian-title").html(data.title);
         }
         if(servid != ""){

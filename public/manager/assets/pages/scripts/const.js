@@ -52,7 +52,7 @@ const ADDELETE = 36;
 const ADEDIT = 37;
 const NEWBORNEDIT = 38;
 const NEWBORNDELETE = 39;
-const STOREYEDIT = 40;
+const MANMADEEDIT = 40;
 
 const QRCODEADD = 41;
 const QRCODEDELETE = 42;

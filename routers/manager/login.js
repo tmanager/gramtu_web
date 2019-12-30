@@ -165,12 +165,14 @@ router.get('/template',function(req,res,next){
     var servid = req.query.servid || '';
     var abroadid = req.query.abroadid || '';
     var newbornid = req.query.newbornid || '';
+    var manmadeid = req.query.manmadeid || '';
     res.render('manager/article/template', {
         artid: artid,
         adid: adid,
         servid: servid,
         abroadid: abroadid,
-        newbornid: newbornid
+        newbornid: newbornid,
+        manmadeid: manmadeid
     });
 });
 
@@ -355,4 +357,19 @@ router.get('/gprice',function(req,res,next){
         res.redirect('/login');
     }
 });
+
+// 人工服务参数
+router.get('/manmade',function(req,res,next){
+    console.info(req.url);
+    var uname = req.query.username;
+    if(req.session["ywtUname" + uname]){
+        res.render('manager/service/manmade',{
+            menu:req.url.substr(1),
+            loginsucc:req.session["ywtLogin" + uname]
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
 module.exports = router;
