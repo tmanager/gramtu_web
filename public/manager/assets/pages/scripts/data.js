@@ -946,7 +946,7 @@ function manmadeDataGet(data,callback){
     });
 }
 
-//编辑新人专区
+// 编辑人工服务
 function manmadeEdit(data){
     App.blockUI({target:'#lay-out',boxed: true});
     $.ajax({

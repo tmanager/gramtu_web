@@ -168,11 +168,12 @@ var ManmadeEdit = function() {
             if ($('.manmade-form').validate().form()) {
                 var manmade = $('.manmade-form').getFormData();
                 manmade.content = $("#manmade").summernote("code");
-                if ($("input[name=edittype]").val() == MANMADEADD) {
-                    manmadeAdd(manmade);
-                } else {
-                    manmadeEdit(manmade);
-                }
+                // if ($("input[name=edittype]").val() == MANMADEADD) {
+                //     manmadeAdd(manmade);
+                // } else {
+                //     manmadeEdit(manmade);
+                // }
+                manmadeEdit(manmade);
             }
         });
         //新增人工服务

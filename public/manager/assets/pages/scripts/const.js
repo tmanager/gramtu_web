@@ -2,7 +2,7 @@
  * Created by Administrator on 2019/2/19.
  */
 
-var hostIp = "http://172.16.7.105:";
+var hostIp = "http://127.0.0.1:";
 
 var regulateSucc = {
     "uploadFolder" : "/home/yfdev/src/ywt_web",                       // 上传文件所在文件夹
