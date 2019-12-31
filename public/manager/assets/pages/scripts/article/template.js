@@ -10,26 +10,32 @@ var loginSucc = {
 jQuery(document).ready(function() {
     //获取文章内容
     if(artid != ""){
+        document.title = "推荐阅读";
         var data = {artid: artid};
         getArticleContent(data);
     }
     if(adid != ""){
+        document.title = "推荐阅读";
         var data = {adid: adid};
         getAdContent(data);
     }
     if(servid != ""){
+        document.title = "特色服务";
         var data = {servid: servid};
         getServContent(data);
     }
     if(abroadid != ""){
+        document.title = "海外招募";
         var data = {abroadid: abroadid};
         getAbroadContent(data);
     }
     if(newbornid != ""){
+        document.title = "新人专区";
         var data = {newbornid: newbornid};
         getNewbornContent(data);
     }
     if(manmadeid != ""){
+        document.title = "人工服务";
         var data = {manmadeid: manmadeid};
         getManmadeContent(data);
     }
@@ -64,6 +70,10 @@ function getAbroadContentEnd(flg, result){
 }
 
 function getNewbornContentEnd(flg, result){
+    getArticleContentEnd(flg, result)
+}
+
+function getManmadeContentEnd(flg, result){
     getArticleContentEnd(flg, result)
 }
 
