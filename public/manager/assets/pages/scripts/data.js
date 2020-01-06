@@ -966,3 +966,48 @@ function manmadeEdit(data){
         }
     });
 }
+
+// 获取优惠券详情
+function coupHisDataGet(data,callback){
+    App.blockUI({target: '#lay-out',boxed: true});
+    if(data == null){
+        data = {id: "", currentpage: "", pagesize: "", startindex: "0", draw: 1}
+    }
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "coup/his",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("coupHisDataGet:" + JSON.stringify(result));
+            getCoupHisDataEnd(true, result, callback);
+        },
+        error: function (errorMsg) {
+            console.info("coupHisDataGet-error:" + JSON.stringify(errorMsg));
+            getCoupHisDataEnd(false, "", callback);
+        }
+    });
+}
+
+//客服下发优惠券
+function coupGive(data){
+    App.blockUI({target:'#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "coup/give",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("coupGive:" + JSON.stringify(result));
+            coupGiveEnd(true, result, null);
+        },
+        error: function (errorMsg) {
+            console.info("coupGive-error:" + JSON.stringify(errorMsg));
+            coupGiveEnd(false, "", null);
+        }
+    });
+}
