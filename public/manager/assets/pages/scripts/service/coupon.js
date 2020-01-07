@@ -60,8 +60,8 @@ var CoupTable = function () {
             "ajax":function (data, callback, settings) {
                 var formData = $(".inquiry-form").getFormData();
                 var da = {
-                    couptype: formData.couptype,
-                    coupname: formData.coupname,
+                    type: formData.type,
+                    couponname: formData.couponname,
                     currentpage: (data.start / data.length) + 1,
                     pagesize: data.length == -1 ? "": data.length,
                     startindex: data.start,

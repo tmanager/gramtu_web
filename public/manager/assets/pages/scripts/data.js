@@ -273,7 +273,7 @@ function coupDataGet(data,callback){
         type: "post",
         contentType: "application/json",
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "coupquery",    //请求发送到TestServlet处
+        url: webUrl + "coupon/query",    //请求发送到TestServlet处
         data: sendMessageEdit(DEFAULT, data),
         dataType: "json",        //返回数据形式为json
         success: function (result) {
@@ -294,7 +294,7 @@ function coupAdd(data){
         type: "post",
         contentType: "application/json",
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "coupadd",    //请求发送到TestServlet处
+        url: webUrl + "coupon/add",    //请求发送到TestServlet处
         data: sendMessageEdit(DEFAULT, data),
         dataType: "json",        //返回数据形式为json
         success: function (result) {
@@ -315,7 +315,7 @@ function coupEdit(data){
         type: "post",
         contentType: "application/json",
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "coupedit",    //请求发送到TestServlet处
+        url: webUrl + "coupon/edit",    //请求发送到TestServlet处
         data: sendMessageEdit(DEFAULT, data),
         dataType: "json",        //返回数据形式为json
         success: function (result) {
@@ -336,7 +336,7 @@ function coupDelete(data){
         type: "post",
         contentType: "application/json",
         async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-        url: userHostUrl + "coupdelete",    //请求发送到TestServlet处
+        url: webUrl + "coupon/delete",    //请求发送到TestServlet处
         data: sendMessageEdit(DEFAULT, data),
         dataType: "json",        //返回数据形式为json
         success: function (result) {
