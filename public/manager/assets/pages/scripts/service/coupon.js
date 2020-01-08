@@ -80,6 +80,7 @@ var CoupTable = function () {
                 { "data": "upfee" },
                 { "data": "numbers" },
                 { "data": "enddate" },
+                { "data": "status" },
                 { "data": null }
             ],
             columnDefs: [
@@ -102,12 +103,12 @@ var CoupTable = function () {
                         var cType;
                         switch (data) {
                             case "0":
-                            case "1":
                                 cType = "Turnin查重";
                                 break;
-                            case "2":
+                            case "1":
                                 cType = "Grammarian语法检测";
                                 break;
+                            case "2":
 
                         }
                         return cType;
