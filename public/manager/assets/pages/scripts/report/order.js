@@ -5,7 +5,6 @@ var artList = [];
 if (App.isAngularJsApp() === false) {
     jQuery(document).ready(function() {
         OrderTable.init();
-        OrderEdit.init();
     });
 }
 
@@ -34,25 +33,24 @@ var OrderTable = function () {
                     startindex: data.start,
                     draw: data.draw
                 };
-                artDataGet(da, callback);
+                orderDataGet(da, callback);
             },
             columns: [//返回的json数据在这里填充，注意一定要与上面的<th>数量对应，否则排版出现扭曲
                 { "data": null},
                 { "data": null},
-                { "data": "artid", visible: false },
+                { "data": "id", visible: false },
+                { "data": "checktype" },
+                { "data": "orderid" },
+                { "data": "phonenumber" },
+                { "data": "updtime" },
+                { "data": "fullname" },
                 { "data": "title" },
-                { "data": "coverimage" },
-                { "data": "time" },
-                { "data": "editor" },
+                { "data": "filename" },
+                { "data": "status" },
+                { "data": null },
                 { "data": null }
             ],
             columnDefs: [
-                {
-                    "targets":[1],
-                    "render":function(data, type, row, meta){
-                        return '<input type="checkbox" class="checkboxes" value="1" />';
-                    }
-                },
                 {
                     "targets": [0],
                     "data": null,
@@ -61,20 +59,28 @@ var OrderTable = function () {
                     }
                 },
                 {
-                    "targets":[4],
-                    "render": function(data, type, row, meta) {
-                        return "<img src='" + data + "' style='width: 40px; height:40px'>";
+                    "targets":[1],
+                    "render":function(data, type, row, meta){
+                        return '<input type="checkbox" class="checkboxes" value="1" />';
                     }
-                },
-                {
-                    "targets":[5],
+                },{
+                    "targets":[6],
                     "render": function(data, type, row, meta) {
                         return dateTimeFormat(data);
                     }
                 },{
-                    "targets":[7],
+                    "targets":[11],
                     "render": function(data, type, row, meta) {
-                        var text = '<a href=\"javascript:;\" id=\"op_pre\">预览</a>';
+                        var text = '<a href=\"javascript:;\" id=\"op_pre\">PDF报告</a>';
+                        if(makeEdit(menu,loginSucc.functionlist,"#op_edit")){
+                            text += ' | <a href="javascript:;" id="op_edit">HTML报告</a>'
+                        }
+                        return text;
+                    }
+                },{
+                    "targets":[12],
+                    "render": function(data, type, row, meta) {
+                        var text = '<a href=\"javascript:;\" id=\"op_pre\">人工上传报告</a>';
                         if(makeEdit(menu,loginSucc.functionlist,"#op_edit")){
                             text += ' | <a href="javascript:;" id="op_edit">编辑</a>'
                         }
@@ -84,7 +90,7 @@ var OrderTable = function () {
             ],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                 $('td', nRow).attr('style', 'vertical-align: middle; padding-left: 20px');
-                $('td:eq(0), td:eq(1), td:eq(3), td:eq(4), td:eq(6)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
+                $('td:eq(0), td:eq(1), td:eq(4), td:eq(5), td:eq(6)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
             }
         });
         table.find('.group-checkable').change(function () {
@@ -117,194 +123,20 @@ var OrderTable = function () {
     };
 }();
 
-var OrderEdit = function() {
-    var handleArticle = function() {
-        var validator = $('.article-form').validate({
-            errorElement: 'span', //default input error message container
-            errorClass: 'help-block', // default input error message class
-            focusInvalid: false, // do not focus the last invalid input
-            ignore: "",
-            rules: {
-                title: {
-                    required: true,
-                },
-                coverimage: {
-                    required: true,
-                },
-                article: {
-                    required: true,
-                }
-            },
-
-            messages: {
-                title: {
-                    required: "文章标题必须输入"
-                },
-                coverimage: {
-                    required: "封面图必须上传"
-                },
-                article: {
-                    required: "文章内容必须输入",
-                }
-            },
-
-            invalidHandler: function(event, validator) { //display error alert on form submit
-
-            },
-
-            highlight: function(element) { // hightlight error inputs
-                $(element)
-                    .closest('.form-group').addClass('has-error'); // set error class to the control group
-            },
-
-            success: function(label) {
-                label.closest('.form-group').removeClass('has-error');
-                label.remove();
-            },
-
-            errorPlacement: function(error, element) {
-                if (element.closest('.input-icon').size() === 1) {
-                    error.insertAfter(element.closest('.input-icon'));
-                } else {
-                    error.insertAfter(element);
-                }
-            },
-
-            submitHandler: function(form) {
-                form.submit();
-            }
-        });
-
-        $('#article_modify').click(function() {
-            btnDisable($('#article_modify'));
-            if ($('.article-form').validate().form()) {
-                var article = $('.article-form').getFormData();
-                article.content = $("#article").summernote("code");
-                var oldimage = $("input[name=oldimage]").val();
-                if(article.coverimage != oldimage) {
-                    //先上传封面图，再增加文章
-                    var formData = new FormData();
-                    var fileInfo = $("#cover").get(0).files[0];
-                    fileInfo.floder = article.title + "coverimage";
-                    formData.append('image', fileInfo);
-                    $.ajax({
-                        type: 'POST',
-                        url: webUrl + "article/upload/image",
-                        data: formData,
-                        dataType: 'json',
-                        contentType: false,
-                        processData: false,
-                        success: function (result) {
-                            if (result.ret == '0000') {
-                                article.coverimage = result.url;
-                                if($("input[name=edittype]").val() == ARTICLEADD){
-                                    articleAdd(article);
-                                }else{
-                                    articleEdit(article);
-                                }
-                            } else {
-                                alertDialog("上传封面图片失败！" + result.msg);
-                            }
-                        },
-                        error: function (ex) {
-                            alertDialog("上传封面图片失败！");
-                        }
-                    });
-                }else{
-                    if($("input[name=edittype]").val() === ARTICLEADD){
-                        articleAdd(article);
-                    }else{
-                        articleEdit(article);
-                    }
-                }
-            }
-        });
-
-        $("#art_table").on('click', '#op_edit', function (e) {
-            e.preventDefault();
-            validator.resetForm();
-            $(".article-form").find(".has-error").removeClass("has-error");
-            $(".modal-title").text("编辑文章");
-            var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
-            var artid = $("#art_table").dataTable().fnGetData(row).artid;
-            var art = new Object();
-            for(var i=0; i < artList.length; i++){
-                if(artid == artList[i].artid){
-                    art = artList[i];
-                }
-            }
-            //获取该文章的内容
-            var data = {artid: artid};
-            getArticleContent(data, art);
-        });
-
-        $("#art_table").on('click', '#op_pre', function (e) {
-            var host = window.location.protocol + "//" + window.location.host;
-            var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
-            var artid = $("#art_table").dataTable().fnGetData(row).artid;
-            window.open(host + "/template?artid=" + artid);
-        });
-
-        //新增文章
-        $('#op_add').click(function() {
-            validator.resetForm();
-            $(".article-form").find(".has-error").removeClass("has-error");
-            $(".modal-title").text("新增文章");
-            $(":input",".article-form").not(":button,:reset,:submit,:radio").val("")
-                .removeAttr("checked")
-                .removeAttr("selected");
-            $("#article").summernote("code", "");
-            $("input[name=edittype]").val(ARTICLEADD);
-            $("#cover").siblings("img").attr("src", "/public/manager/assets/pages/img/default.jpg");
-            $("#cover").siblings("input[name=image], input[name=oldimage]").val("/public/manager/assets/pages/img/default.jpg");
-            $('#edit_art').modal('show');
-        });
-    };
-
-    return {
-        init: function() {
-            handleArticle();
-        }
-    };
-}();
-
-var ArtDelete = function() {
-    $('#op_del').click(function() {
-        var len = $(".checkboxes:checked").length;
-        if(len < 1){
-            alertDialog("至少选中一项！");
-        }else{
-            var para = 1;
-            confirmDialog("数据删除后将不可恢复，您确定要删除吗？", ArtDelete.deleteArt, para)
-        }
-    });
-    return{
-        deleteArt: function(){
-            var artlist = {artidlist:[]};
-            $(".checkboxes:checked").parents("td").each(function () {
-                var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
-                var artid = $("#art_table").dataTable().fnGetData(row).artid;
-                artlist.artidlist.push(artid);
-            });
-            artDelete(artlist);
-        }
-    }
-}();
-
-function getArtDataEnd(flg, result, callback){
+function getOrderDataEnd(flg, result, callback){
     App.unblockUI('#lay-out');
     if(flg){
         if (result && result.retcode == SUCCESS) {
             var res = result.response;
-            artList = res.artlist;
-            tableDataSet(res.draw, res.totalcount, res.totalcount, res.artlist, callback);
+            orderList = res.orderlist;
+            tableDataSet(res.draw, res.totalcount, res.totalcount, res.orderlist, callback);
         }else{
             tableDataSet(0, 0, 0, [], callback);
             alertDialog(result.retmsg);
         }
     }else{
         tableDataSet(0, 0, 0, [], callback);
-        alertDialog("文章获取失败！");
+        alertDialog("订单获取失败！");
     }
 }
 

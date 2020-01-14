@@ -372,4 +372,19 @@ router.get('/manmade',function(req,res,next){
     }
 });
 
+// 订单查询
+router.get('/order',function(req,res,next){
+    console.info(req.url);
+    var uname = req.query.username;
+    if(req.session["ywtUname" + uname]){
+        res.render('manager/report/order',{
+            menu:req.url.substr(1),
+            loginsucc:req.session["ywtLogin" + uname]
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
+
 module.exports = router;
