@@ -250,9 +250,23 @@ var OrderEdit = function() {
                     order = orderList[i];
                 }
             }
-            //获取该文章的内容
-            var data = {orderid: orderid};
-            getOrderContent(data, order);
+            if(order.checktype === "2"){
+                $("#fullnamerow").hide();
+                $("#lastnamerow").hide();
+                $("#titlerow").hide();
+                $("#repetraterow").hide();
+                $("#htmlreporturlrow").hide();
+            }else{
+                $("#fullnamerow").show();
+                $("#lastnamerow").show();
+                $("#titlerow").show();
+                $("#repetraterow").show();
+                $("#htmlreporturlrow").show();
+            }
+            var exclude = ["htmlreporturl","pdfreporturl"];
+            var options = { jsonValue: order, exclude:exclude, isDebug: false};
+            $(".order-form").initForm(options);
+            $('#upload_report').modal('show');
         });
         $('#order_modify').click(function() {
             btnDisable($('#order_modify'));
@@ -338,33 +352,3 @@ $("#order_inquiry").on("click", function(){
     OrderTable.init();
 });
 
-
-function getOrderContentEnd(flg, result, temp){
-    App.unblockUI('#lay-out');
-    if(flg){
-        if (result && result.retcode == SUCCESS) {
-            var order = result.response;
-            if(order.checktype === "2"){
-                $("#firstnamerow").hide();
-                $("#lastnamerow").hide();
-                $("#titlerow").hide();
-                $("#repetraterow").hide();
-                $("#htmlreporturlrow").hide();
-            }else{
-                $("#firstnamerow").show();
-                $("#lastnamerow").show();
-                $("#titlerow").show();
-                $("#repetraterow").show();
-                $("#htmlreporturlrow").show();
-            }
-            var exclude = [""];
-            var options = { jsonValue: order, exclude:exclude, isDebug: false};
-            $(".order-form").initForm(options);
-            $('#upload_report').modal('show');
-        }else{
-            alertDialog("获取订单内容失败！");
-        }
-    }else{
-        alertDialog("获取订单内容失败！");
-    }
-}

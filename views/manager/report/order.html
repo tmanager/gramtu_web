@@ -138,23 +138,17 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">分类<span class="required"> * </span></label>
                                     <div class="col-md-9">
-                                        <select class="form-control" name="checktype" id="checktype">
+                                        <select class="form-control" name="checktype" id="checktype" readonly>
                                             <option value="0">国际查重</option>
                                             <option value="1">UK查重</option>
                                             <option value="2">语法检测</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group" id="firstnamerow">
-                                    <label class="col-md-2 control-label">名<span class="required"> * </span></label>
+                                <div class="form-group" id="fullnamerow">
+                                    <label class="col-md-2 control-label">姓|名<span class="required"> * </span></label>
                                     <div class="col-md-9">
-                                        <input class="form-control" placeholder="名" name="firstname" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group" id="lastnamerow">
-                                    <label class="col-md-2 control-label">姓<span class="required"> * </span></label>
-                                    <div class="col-md-9">
-                                        <input class="form-control" placeholder="姓" name="lastname" readonly>
+                                        <input class="form-control" placeholder="姓|名" name="fullname" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group" id="titlerow">
@@ -172,13 +166,13 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">PDF报告文件<span class="required"> * </span></label>
                                     <div class="col-md-9">
-                                        <input type="file" name="pdfreporturl" id="pdfreporturl">
+                                        <input type="file" name="pdfreporturl" id="pdfreporturl" accept="application/pdf">
                                     </div>
                                 </div>
                                 <div class="form-group" id="htmlreporturlrow">
                                     <label class="col-md-2 control-label">HTML报告文件<span class="required"> * </span></label>
                                     <div class="col-md-9">
-                                        <input type="file" name="htmlreporturl" id="htmlreporturl">
+                                        <input type="file" name="htmlreporturl" id="htmlreporturl" accept="text/html">
                                     </div>
                                 </div>
 
