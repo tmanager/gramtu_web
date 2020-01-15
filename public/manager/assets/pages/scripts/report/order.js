@@ -1,16 +1,67 @@
 /**
  * Created by Administrator on 2019/12/04.
  */
-var artList = [];
+var orderList = [];
 if (App.isAngularJsApp() === false) {
     jQuery(document).ready(function() {
         OrderTable.init();
+        OrderEdit.init();
     });
 }
+//时间选择控件初始化
+$("#starttime").datetimepicker({
+    format: 'yyyy-mm-dd hh:ii',
+    language:'zh-CN',
+    todayBtn: 'linked',
+    todayHighlight:true, //高亮‘今天’
+    //clearBtn:true,   //清除按钮
+    autoclose: true,//选中之后自动隐藏日期选择框
+    endDate : new Date()
+}).on('changeDate',function(e){
+
+});
+
+$("#endtime").datetimepicker({
+    format: 'yyyy-mm-dd hh:ii',
+    language:'zh-CN',
+    todayBtn: 'linked',
+    autoclose: true,//选中之后自动隐藏日期选择框
+    todayHighlight:true, //高亮‘今天’
+    //clearBtn:true,   //清除按钮
+    endDate : new Date()
+}).on('changeDate',function(e){
+
+});
+
+const dateOptions = {
+    language: 'zh-CN',
+    format: 'yyyy-mm-dd HH:ii',
+    minuteStep: 1,
+    autoclose: true
+};
+
+$('#starttime').datetimepicker(dateOptions).on('show', function () {
+    const endTime = $('#endtime').val();
+    if (endTime !== '') {
+        $(this).datetimepicker('setEndDate', endTime);
+    } else {
+        $(this).datetimepicker('setEndDate', null);
+    }
+});
+
+$('#endtime').datetimepicker(dateOptions).on('show', function () {
+    const startTime = $('#starttime').val();
+    if (startTime !== '') {
+        $(this).datetimepicker('setStartDate', startTime);
+    } else {
+        $(this).datetimepicker('setStartDate', null);
+    }
+});
+
 
 var OrderTable = function () {
     var initTable = function () {
-        var table = $('#art_table');
+        var table = $('#order_table');
         pageLengthInit(table);
         table.dataTable({
             "language": TableLanguage,
@@ -27,7 +78,10 @@ var OrderTable = function () {
             "ajax":function (data, callback, settings) {
                 var formData = $(".inquiry-form").getFormData();
                 var da = {
-                    title: formData.title,
+                    orderid: formData.orderid,
+                    phone: formData.phone,
+                    starttime: formData.starttime.replace(/-|:| /g, ""),
+                    endtime: formData.endtime.replace(/-|:| /g, ""),
                     currentpage: (data.start / data.length) + 1,
                     pagesize: data.length == -1 ? "": data.length,
                     startindex: data.start,
@@ -36,7 +90,6 @@ var OrderTable = function () {
                 orderDataGet(da, callback);
             },
             columns: [//返回的json数据在这里填充，注意一定要与上面的<th>数量对应，否则排版出现扭曲
-                { "data": null},
                 { "data": null},
                 { "data": "id", visible: false },
                 { "data": "checktype" },
@@ -59,59 +112,53 @@ var OrderTable = function () {
                     }
                 },
                 {
-                    "targets":[1],
+                    "targets":[2],
                     "render":function(data, type, row, meta){
-                        return '<input type="checkbox" class="checkboxes" value="1" />';
+                        var check = "";
+                        switch (data) {
+                            case "0":
+                                check = "国际查重";
+                                break;
+                            case "1":
+                                check = "UK查重";
+                                break;
+                            case "2":
+                                check = "语法检测";
+                                break;
+                        }
+                        return check;
                     }
                 },{
-                    "targets":[6],
+                    "targets":[5],
                     "render": function(data, type, row, meta) {
                         return dateTimeFormat(data);
                     }
                 },{
-                    "targets":[11],
+                    "targets":[8],
                     "render": function(data, type, row, meta) {
-                        var text = '<a href=\"javascript:;\" id=\"op_pre\">PDF报告</a>';
-                        if(makeEdit(menu,loginSucc.functionlist,"#op_edit")){
-                            text += ' | <a href="javascript:;" id="op_edit">HTML报告</a>'
+                        return '<a href="' + row.originalurl + '">' + data + '</a>';
+                    }
+                },{
+                    "targets":[10],
+                    "render": function(data, type, row, meta) {
+                        var text = '<a href="' + row.pdfreporturl + '">PDF报告</a>';
+                        if(row.checktype === "2"){
+                            text += ' | <a href="' + row.htmlreporturl + '">HTML报告</a>'
                         }
                         return text;
                     }
                 },{
-                    "targets":[12],
+                    "targets":[11],
                     "render": function(data, type, row, meta) {
-                        var text = '<a href=\"javascript:;\" id=\"op_pre\">人工上传报告</a>';
-                        if(makeEdit(menu,loginSucc.functionlist,"#op_edit")){
-                            text += ' | <a href="javascript:;" id="op_edit">编辑</a>'
-                        }
-                        return text;
+                        return '<a href="javascript:;" id="op_upload">人工上传报告</a>';
                     }
                 }
             ],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                 $('td', nRow).attr('style', 'vertical-align: middle; padding-left: 20px');
-                $('td:eq(0), td:eq(1), td:eq(4), td:eq(5), td:eq(6)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
+                $('td:eq(0), td:eq(3), td:eq(4), td:eq(5)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
             }
         });
-        table.find('.group-checkable').change(function () {
-            var set = jQuery(this).attr("data-set");
-            var checked = jQuery(this).is(":checked");
-            jQuery(set).each(function () {
-                if (checked) {
-                    $(this).prop("checked", true);
-                    $(this).parents('tr').addClass("active");
-                } else {
-                    $(this).prop("checked", false);
-                    $(this).parents('tr').removeClass("active");
-                }
-            });
-        });
-
-        table.on('change', 'tbody tr .checkboxes', function () {
-            $(this).parents('tr').toggleClass("active");
-        });
-
-
     };
     return {
         init: function (data) {
@@ -119,6 +166,132 @@ var OrderTable = function () {
                 return;
             }
             initTable(data);
+        }
+    };
+}();
+
+
+var OrderEdit = function() {
+    var handleOrder = function() {
+        var validator = $('.order-form').validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+                repetrate: {
+                    frequired: true,
+                },
+                pdfreporturl: {
+                    required: true,
+                },
+                htmlreporturl: {
+                    frequired: true,
+                }
+            },
+
+            messages: {
+                repetrate: {
+                    frequired: "重复率必须输入"
+                },
+                pdfreporturl: {
+                    required: "PDF报告文件必须选择",
+                },
+                htmlreporturl: {
+                    frequired: "HTML报告文件必须选择",
+                }
+            },
+
+            invalidHandler: function(event, validator) { //display error alert on form submit
+
+            },
+
+            highlight: function(element) { // hightlight error inputs
+                $(element)
+                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+            },
+
+            success: function(label) {
+                label.closest('.form-group').removeClass('has-error');
+                label.remove();
+            },
+
+            errorPlacement: function(error, element) {
+                if (element.closest('.input-icon').size() === 1) {
+                    error.insertAfter(element.closest('.input-icon'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+        jQuery.validator.addMethod("frequired", function(value, element) {
+            if($("#checktype").val() == "0"){
+                return value.replace(/\s+/g, "") != "";
+            }else{
+                return true;
+            }
+        },"该字段必须输入");
+
+        //上传报告
+        $("#order_table").on('click', '#op_upload', function (e) {
+            e.preventDefault();
+            validator.resetForm();
+            $(".order-form").find(".has-error").removeClass("has-error");
+            var row = $(this).parents('tr')[0];     //通过获取该td所在的tr，即td的父级元素，取出第一列序号元素
+            var orderid = $("#order_table").dataTable().fnGetData(row).orderid;
+            var order = new Object();
+            for(var i=0; i < orderList.length; i++){
+                if(orderid == orderList[i].orderid){
+                    order = orderList[i];
+                }
+            }
+            //获取该文章的内容
+            var data = {orderid: orderid};
+            getOrderContent(data, order);
+        });
+        $('#order_modify').click(function() {
+            btnDisable($('#order_modify'));
+            if ($('.order-form').validate().form()) {
+                //先上传文件
+                var order = $('.order-form').getFormData();
+                var formData = new FormData();
+                var pdfFileInfo = $("#pdfreporturl").get(0).files[0];
+                var htmlFileInfo = $("#htmlreporturl").get(0).files[0];
+                formData.append('pdfreporturl', pdfFileInfo);
+                formData.append('htmlreporturl', htmlFileInfo);
+                formData.append('orderid', order.orderid);
+                formData.append('repetrate', order.repetrate);
+                $.ajax({
+                    type: 'POST',
+                    url: webUrl + "order/upload",
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        if (result.retcode == "0000") {
+                            OrderTable.init();
+                            $('#upload_report').modal('hide');
+                            alertDialog("上传报告文件成功！");
+                        } else {
+                            alertDialog("上传报告文件失败！" + result.msg);
+                        }
+                    },
+                    error: function () {
+                        alertDialog("上传报告文件失败！");
+                    }
+                });
+            }
+        })
+    };
+
+    return {
+        init: function() {
+            handleOrder();
         }
     };
 }();
@@ -140,29 +313,18 @@ function getOrderDataEnd(flg, result, callback){
     }
 }
 
-function artInfoEditEnd(flg, result, type){
-    var res = "失败";
+function orderInfoEditEnd(flg, result, type){
+    var res = "上传失败";
     var text = "";
     var alert = "";
-    switch (type){
-        case ARTICLEADD:
-            text = "新增";
-            break;
-        case ARTDELETE:
-            text = "删除";
-            break;
-        case ARTEDIT:
-            text = "编辑";
-            break;
-    }
     if(flg){
         if(result && result.retcode != SUCCESS){
             alert = result.retmsg;
         }
         if (result && result.retcode == SUCCESS) {
             res = "成功";
-            ArtTable.init();
-            $('#edit_art').modal('hide');
+            OrderTable.init();
+            $('#upload_report').modal('hide');
         }
     }
     if(alert == "") alert = text + "文章" + res + "！";
@@ -170,57 +332,38 @@ function artInfoEditEnd(flg, result, type){
     alertDialog(alert);
 }
 
-$("#art_inquiry").on("click", function(){
+$("#order_inquiry").on("click", function(){
     //用户查询
-    ArtTable.init();
+    OrderTable.init();
 });
 
 
-$("#cover").change(function(){
-    var file = $(this).get(0).files[0];
-    var inputObj = $(this).siblings("input[name=coverimage]");
-    var imgObj = $(this).siblings("img");
-    inputObj.val(file);
-    if(file == undefined){
-        imgObj.attr("src", "/public/manager/assets/pages/img/default.jpg");
-        inputObj.val("");
-        return;
-    }
-    var myimg = URL.createObjectURL(file);
-    var img = new Image();
-    img.src = myimg;
-    img.onload = function(){
-        if(img.width === 170 && img.height === 170){
-            imgObj.attr("src", myimg);
-        }else{
-            imgObj.attr("src", "/public/manager/assets/pages/img/default.jpg");
-            inputObj.val("");
-            $("#cover").val("");
-            alertDialog("只能上传尺寸为170x170的图片！");
-        }
-
-    };
-});
-
-
-function getArticleContentEnd(flg, result, temp){
+function getOrderContentEnd(flg, result, temp){
+    App.unblockUI('#lay-out');
     if(flg){
         if (result && result.retcode == SUCCESS) {
-            var art = result.response;
-            art.artid = temp.artid;
-            var exclude = ["article"];
-            var options = { jsonValue: art, exclude:exclude, isDebug: false};
-            $(".article-form").initForm(options);
-            //LOGO框赋值
-            $("#cover").siblings("img").attr("src", temp.coverimage);
-            $("#cover").siblings("input[name=coverimage], input[name=oldimage]").val(temp.coverimage);
-            $("#article").summernote("code", art.content);
-            $("input[name=edittype]").val(ARTEDIT);
-            $('#edit_art').modal('show');
+            var order = result.response;
+            if(order.checktype === "2"){
+                $("#firstnamerow").hide();
+                $("#lastnamerow").hide();
+                $("#titlerow").hide();
+                $("#repetraterow").hide();
+                $("#htmlreporturlrow").hide();
+            }else{
+                $("#firstnamerow").show();
+                $("#lastnamerow").show();
+                $("#titlerow").show();
+                $("#repetraterow").show();
+                $("#htmlreporturlrow").show();
+            }
+            var exclude = [""];
+            var options = { jsonValue: order, exclude:exclude, isDebug: false};
+            $(".order-form").initForm(options);
+            $('#upload_report').modal('show');
         }else{
-            alertDialog("获取文章内容失败！");
+            alertDialog("获取订单内容失败！");
         }
     }else{
-        alertDialog("获取文章内容失败！");
+        alertDialog("获取订单内容失败！");
     }
 }

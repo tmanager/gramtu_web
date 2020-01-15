@@ -1035,3 +1035,47 @@ function orderDataGet(data,callback){
         }
     });
 }
+
+// 获取订单详情
+function getOrderContent(data, callback){
+    App.blockUI({target: '#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "order/detail",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("getOrderContent:" + JSON.stringify(result));
+            getOrderContentEnd(true, result, callback);
+        },
+        error: function (errorMsg) {
+            console.info("getOrderContent-error:" + JSON.stringify(errorMsg));
+            getOrderContentEnd(false, "", callback);
+        }
+    });
+}
+
+function wxuserDataGet(data,callback){
+    App.blockUI({target: '#lay-out',boxed: true});
+    if(data == null){
+        data = {nickname: "", phonenumber: "", currentpage: "", pagesize: "", startindex: "0", draw: 1}
+    }
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "wxuser/query",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("wxuserDataGet:" + JSON.stringify(result));
+            getWXUserDataEnd(true, result, callback);
+        },
+        error: function (errorMsg) {
+            console.info("wxuserDataGet-error:" + JSON.stringify(errorMsg));
+            getWXUserDataEnd(false, "", callback);
+        }
+    });
+}
