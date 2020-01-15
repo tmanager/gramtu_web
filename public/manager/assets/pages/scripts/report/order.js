@@ -136,14 +136,15 @@ var OrderTable = function () {
                 },{
                     "targets":[8],
                     "render": function(data, type, row, meta) {
-                        return '<a href="' + row.originalurl + '">' + data + '</a>';
+                        return '<a href="' + row.originalurl + '" target="_blank">' + data + '</a>';
                     }
                 },{
                     "targets":[10],
                     "render": function(data, type, row, meta) {
-                        var text = '<a href="' + row.pdfreporturl + '">PDF报告</a>';
-                        if(row.checktype === "2"){
-                            text += ' | <a href="' + row.htmlreporturl + '">HTML报告</a>'
+                        if(data.status != "检测完成") return "-";
+                        var text = '<a href="' + row.pdfreporturl + '" target="_blank">PDF报告</a>';
+                        if(row.checktype !== "2"){
+                            text += ' | <a href="' + row.htmlreporturl + '" target="_blank">HTML报告</a>'
                         }
                         return text;
                     }
@@ -155,7 +156,7 @@ var OrderTable = function () {
                 }
             ],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                $('td', nRow).attr('style', 'vertical-align: middle; padding-left: 20px');
+                $('td', nRow).attr('style', 'vertical-align: middle;');
                 $('td:eq(0), td:eq(3), td:eq(4), td:eq(5)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
             }
         });
@@ -229,7 +230,7 @@ var OrderEdit = function() {
             }
         });
         jQuery.validator.addMethod("frequired", function(value, element) {
-            if($("#checktype").val() == "0"){
+            if($("#checktype").val() !== "2"){
                 return value.replace(/\s+/g, "") != "";
             }else{
                 return true;
