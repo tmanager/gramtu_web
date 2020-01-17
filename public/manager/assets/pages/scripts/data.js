@@ -1079,3 +1079,91 @@ function wxuserDataGet(data,callback){
         }
     });
 }
+
+//订单统计数据获取
+function orderStatisticsQuery() {
+    App.blockUI({target: '#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "order/statistics",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, null),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("orderStatisticsQuery:" + JSON.stringify(result));
+            getOrderStatisticsEnd(true, result);
+        },
+        error: function (errorMsg) {
+            console.info("orderStatisticsQuery-error:" + JSON.stringify(errorMsg));
+            getOrderStatisticsEnd(false, "");
+        }
+    });
+}
+
+
+//订单统计数据获取
+function oderStatisticsOfDay() {
+    App.blockUI({target: '#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "order/line",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, null),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("oderStatisticsOfDay:" + JSON.stringify(result));
+            getOrderStatisticsOfDayEnd(true, result);
+        },
+        error: function (errorMsg) {
+            console.info("oderStatisticsOfDay-error:" + JSON.stringify(errorMsg));
+            getOrderStatisticsOfDayEnd(false, "");
+        }
+    });
+}
+
+//投诉建议获取
+function suggestDataGet(data,callback){
+    App.blockUI({target: '#lay-out',boxed: true});
+    if(data == null){
+        data = {phone: "", starttime: "", endtime: "", currentpage: "", pagesize: "", startindex: "0", draw: 1}
+    }
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "suggest/query",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("suggestDataGet:" + JSON.stringify(result));
+            getSuggestDataEnd(true, result, callback);
+        },
+        error: function (errorMsg) {
+            console.info("suggestDataGet-error:" + JSON.stringify(errorMsg));
+            getSuggestDataEnd(false, "", callback);
+        }
+    });
+}
+
+//投诉建议处理
+function suggestEdit(data){
+    App.blockUI({target:'#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "suggest/edit",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, data),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("suggestEdit:" + JSON.stringify(result));
+            suggestInfoEditEnd(true, result, null);
+        },
+        error: function (errorMsg) {
+            console.info("suggestEdit-error:" + JSON.stringify(errorMsg));
+            suggestInfoEditEnd(false, "", null);
+        }
+    });
+}

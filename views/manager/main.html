@@ -6,17 +6,25 @@
 
 <!--本页面用到的JS-->
 <script src="../../public/manager/assets/global/plugins/echartsjs/echarts.js" type="text/javascript"></script>
-<script src="../../public/manager/assets/global/plugins/echartsjs/echarts.min.js" type="text/javascript"></script>
 <script src="../../public/manager/assets/pages/scripts/scan-echarts.js" type="text/javascript"></script>
-
+<style>
+    .right{
+        right:15px;
+        padding-right:15px
+    }
+    .left{
+        left:15px;
+        padding-left:15px
+    }
+</style>
 <!-- 扫描次数统计开始 -->
-<div class="row" style="margin-top: -35px">
-    <!--<div class="col-md-12 col-sm-12">
+<div class="row" style="margin-top: -15px">
+    <div class="col-md-12 col-sm-12">
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-bar-chart font-dark hide"></i>
-                    <span class="caption-subject font-dark bold uppercase">扫描次数统计</span>
+                    <span class="caption-subject font-dark bold uppercase">订单统计</span>
                 </div>
             </div>
             <div class="portlet-body">
@@ -26,11 +34,11 @@
                             <div class="visual">
                                 <i class="fa fa-comments"></i>
                             </div>
-                            <div class="details">
+                            <div class="details right">
                                 <div class="number">
-                                    <span id="todayCount">-</span><span> 次</span>
+                                    <span id="todayUser">0</span><span> 人</span>
                                 </div>
-                                <div class="desc"> 今日扫描次数 </div>
+                                <div class="desc"> 今日注册人数 </div>
                             </div>
                         </div>
                     </div>
@@ -39,20 +47,156 @@
                             <div class="visual">
                                 <i class="fa fa-bar-chart-o"></i>
                             </div>
-                            <div class="details">
+                            <div class="details right">
                                 <div class="number">
-                                    <span id="totalCount">-</span><span> 次</span>
+                                    <span id="totalUser">0</span><span> 人</span>
                                 </div>
-                                <div class="desc"> 累计扫描次数 </div>
+                                <div class="desc"> 总注册人数 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 green">
+                            <div class="visual">
+                                <i class="fa fa-shopping-cart"></i>
+                            </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="totalCount">0</span><span> 个</span>
+                                </div>
+                                <div class="desc"> 全部订单数 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 purple">
+                            <div class="visual">
+                                <i class="fa fa-globe"></i>
+                            </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="totalAmount">0</span><span> 元</span>
+                                </div>
+                                <div class="desc"> 全部订单金额 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 blue">
+                            <div class="visual">
+                                <i class="fa fa-comments"></i>
+                            </div>
+                            <div class="details left">
+                                <div class="number">
+                                    <span id="todayTurninCount">0</span><span> 个</span>
+                                </div>
+                                <div class="desc"> 今日Turnin订单数 </div>
+                            </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="todayTurninAmount">0</span><span> 元</span>
+                                </div>
+                                <div class="desc"> 今日Turnin金额 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 red">
+                            <div class="visual">
+                                <i class="fa fa-bar-chart-o"></i>
+                            </div>
+                            <div class="details left">
+                                <div class="number">
+                                    <span id="totalTurninCount">0</span><span> 个</span>
+                                </div>
+                                <div class="desc"> 全部Turnin订单数 </div>
+                            </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="totalTurninAmount">0</span><span> 元</span>
+                                </div>
+                                <div class="desc"> 全部Turnin金额 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 green">
+                            <div class="visual">
+                                <i class="fa fa-shopping-cart"></i>
+                            </div>
+                            <div class="details left">
+                                <div class="number">
+                                    <span id="todayGramCount">0</span><span> 个</span>
+                                </div>
+                                <div class="desc"> 今日Gram订单数 </div>
+                            </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="todayGramAmount">0</span><span> 元</span>
+                                </div>
+                                <div class="desc"> 今日Gram金额 </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 purple">
+                            <div class="visual">
+                                <i class="fa fa-globe"></i>
+                            </div>
+                            <div class="details left">
+                                <div class="number">
+                                    <span id="totalGramCount">0</span><span> 个</span>
+                                </div>
+                                <div class="desc"> 全部Gram订单数 </div>
+                            </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="totalGramAmount">0</span><span> 元</span>
+                                </div>
+                                <div class="desc"> 全部Gram金额 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
-    </div>-->
+    </div>
+</div>
+<div class="row" style="margin-top: -15px">
+    <div class="col-md-12 col-sm-12">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-bar-chart font-dark hide"></i>
+                    <span class="caption-subject font-dark bold uppercase">订单趋势</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="echarts_line" class="chart"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<div class="row" style="margin-top: -15px">
+    <div class="col-md-12 col-sm-12">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-bar-chart font-dark hide"></i>
+                    <span class="caption-subject font-dark bold uppercase">订单分布</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="echarts_pie" class="chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- 密码为初始密码（123456）时强制弹框开始 -->
 <div id="edit_main" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">

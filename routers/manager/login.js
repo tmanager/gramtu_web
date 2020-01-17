@@ -401,4 +401,18 @@ router.get('/wxuser',function(req,res,next){
 });
 
 
+// 投诉建议查询
+router.get('/suggest',function(req,res,next){
+    console.info(req.url);
+    var uname = req.query.username;
+    if(req.session["ywtUname" + uname]){
+        res.render('manager/report/suggest',{
+            menu:req.url.substr(1),
+            loginsucc:req.session["ywtLogin" + uname]
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
 module.exports = router;

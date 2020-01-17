@@ -452,6 +452,7 @@ function btnDisable(id){
 function btnEnable(id){
     id.removeAttr("disabled");
 }
+
 function formatCurrency(num) {
     if(num === "") return num;
     var negative = 0;
