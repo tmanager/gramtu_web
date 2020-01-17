@@ -15,7 +15,7 @@ if(App.isAngularJsApp() === false){
         //按日期获取扫描次数（日）
         getOderStatisticsOfDay();
         //不分页取所有订单
-        orderDataGet(null, null);
+        orderDataGet({title: "", currentpage: "", pagesize: "100", startindex: "0", draw: 1}, null);
         if(localStorage.getItem("repassword") == 0){
             updatePasswordAlert();
         }
@@ -328,6 +328,27 @@ function line_display(list){
     //整理数据
     var date = [];
     var turnincount = [], gramcount = [], turninamount = [], gramamount = [];
+    //以下是测试数据
+    list = [
+        {date:"20200101", turnincount:10, turninamount:100.00, gramcount:20, gramamount:200.00},
+        {date:"20200102", turnincount:9, turninamount:200.00, gramcount:3, gramamount:100.00},
+        {date:"20200103", turnincount:0, turninamount:0.00, gramcount:15, gramamount:200.00},
+        {date:"20200104", turnincount:20, turninamount:150.00, gramcount:0, gramamount:0.00},
+        {date:"20200105", turnincount:11, turninamount:108.00, gramcount:1, gramamount:20.00},
+        {date:"20200106", turnincount:12, turninamount:104.00, gramcount:2, gramamount:40.00},
+        {date:"20200107", turnincount:3, turninamount:200.00, gramcount:3, gramamount:60.00},
+        {date:"20200108", turnincount:5, turninamount:500.00, gramcount:5, gramamount:100.00},
+        {date:"20200109", turnincount:23, turninamount:120.00, gramcount:8, gramamount:250.00},
+        {date:"20200110", turnincount:11, turninamount:180.00, gramcount:10, gramamount:1000.00},
+        {date:"20200111", turnincount:10, turninamount:20.00, gramcount:6, gramamount:60.00},
+        {date:"20200112", turnincount:5, turninamount:30.00, gramcount:20, gramamount:2000.00},
+        {date:"20200113", turnincount:6, turninamount:50.00, gramcount:17, gramamount:170.00},
+        {date:"20200114", turnincount:8, turninamount:80.00, gramcount:11, gramamount:120.00},
+        {date:"20200115", turnincount:20, turninamount:500.00, gramcount:12, gramamount:150.00},
+        {date:"20200116", turnincount:1, turninamount:100.00, gramcount:18, gramamount:180.00},
+        {date:"20200117", turnincount:9, turninamount:180.00, gramcount:19, gramamount:190.00},
+        {date:"20200118", turnincount:15, turninamount:560.00, gramcount:20, gramamount:200.00},
+    ];
     for(var i in list){
         date.push(formatDate(list[i].date));
         turnincount.push(list[i].turnincount);
@@ -376,13 +397,13 @@ function line_display(list){
         series:[{
             name:'Turnin订单数',
             data:turnincount,//[1,1,3,0,1,3],
-            smooth:false,
+            smooth:true,
             yAxisIndex: 0,
             type:'line'
         },{
             name:'Gram订单数',
             data:gramcount,//[2,1,3,0,4,3],
-            smooth:false,
+            smooth:true,
             yAxisIndex: 0,
             type:'line'
         },{
@@ -401,6 +422,23 @@ function line_display(list){
 }
 
 function getOrderStatisticsEnd(flg,result,type){
+    //以下是测试数据
+    $("#todayUser").html(formatNumber(5));
+    $("#totalUser").html(formatNumber(100));
+    $("#totalCount").html(formatNumber(150));
+    $("#totalAmount").html(formatCurrency(2430.00));
+    $("#todayTurninCount").html(formatNumber(7));
+    $("#todayTurninAmount").html(formatCurrency(100.00));
+    $("#totalTurninCount").html(formatNumber(50));
+    $("#totalTurninAmount").html(formatCurrency(1000.00));
+    $("#todayTurninUKCount").html(formatNumber(4));
+    $("#todayTurninUKAmount").html(formatCurrency(100.00));
+    $("#totalTurninUKCount").html(formatNumber(60));
+    $("#totalTurninUKAmount").html(formatCurrency(1000.00));
+    $("#todayGramCount").html(formatNumber(6));
+    $("#todayGramAmount").html(formatCurrency(43.00));
+    $("#totalGramCount").html(formatNumber(60));
+    $("#totalGramAmount").html(formatCurrency(430.00));
     if(flg){
         if (result && result.retcode == SUCCESS) {
             //将返回结果显示
@@ -412,6 +450,10 @@ function getOrderStatisticsEnd(flg,result,type){
             $("#todayTurninAmount").html(formatCurrency(result.response.todayturninamount / 100));
             $("#totalTurninCount").html(formatNumber(result.response.totalturnincount));
             $("#totalTurninAmount").html(formatCurrency(result.response.totalturninamount / 100));
+            $("#todayTurninUKCount").html(formatNumber(result.response.todayturnincount));
+            $("#todayTurninUKAmount").html(formatCurrency(result.response.todayturninamount / 100));
+            $("#totalTurninUKCount").html(formatNumber(result.response.totalturnincount));
+            $("#totalTurninUKAmount").html(formatCurrency(result.response.totalturninamount / 100));
             $("#todayGramCount").html(formatNumber(result.response.todaygramcount));
             $("#todayGramAmount").html(formatCurrency(result.response.todaygramamount / 100));
             $("#totalGramCount").html(formatNumber(result.response.totalgramcount));

@@ -16,6 +16,9 @@
         left:15px;
         padding-left:15px
     }
+    .number{
+        font-size: 25px!important;
+    }
 </style>
 <!-- 扫描次数统计开始 -->
 <div class="row" style="margin-top: -15px">
@@ -88,17 +91,71 @@
                             <div class="visual">
                                 <i class="fa fa-comments"></i>
                             </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="todayGramCount">0</span><span> 个</span>
+                                </div>
+                                <div class="desc"> 今日Gram订单数 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 red">
+                            <div class="visual">
+                                <i class="fa fa-bar-chart-o"></i>
+                            </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="todayGramAmount">0</span><span> 元</span>
+                                </div>
+                                <div class="desc"> 今日Gram订单金额 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 green">
+                            <div class="visual">
+                                <i class="fa fa-shopping-cart"></i>
+                            </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="totalGramCount">0</span><span> 个</span>
+                                </div>
+                                <div class="desc"> 全部Gram订单数 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 purple">
+                            <div class="visual">
+                                <i class="fa fa-globe"></i>
+                            </div>
+                            <div class="details right">
+                                <div class="number">
+                                    <span id="totalGramAmount">0</span><span> 元</span>
+                                </div>
+                                <div class="desc"> 全部Gram订单金额 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="dashboard-stat dashboard-stat-v2 blue">
+                            <div class="visual">
+                                <i class="fa fa-comments"></i>
+                            </div>
                             <div class="details left">
                                 <div class="number">
                                     <span id="todayTurninCount">0</span><span> 个</span>
                                 </div>
-                                <div class="desc"> 今日Turnin订单数 </div>
+                                <div class="desc"> 今日Turnin国际<br>订单数 </div>
                             </div>
                             <div class="details right">
                                 <div class="number">
                                     <span id="todayTurninAmount">0</span><span> 元</span>
                                 </div>
-                                <div class="desc"> 今日Turnin金额 </div>
+                                <div class="desc"> 今日Turnin国际<br>金额 </div>
                             </div>
                         </div>
                     </div>
@@ -111,52 +168,51 @@
                                 <div class="number">
                                     <span id="totalTurninCount">0</span><span> 个</span>
                                 </div>
-                                <div class="desc"> 全部Turnin订单数 </div>
+                                <div class="desc"> 全部Turnin国际<br>订单数 </div>
                             </div>
                             <div class="details right">
                                 <div class="number">
                                     <span id="totalTurninAmount">0</span><span> 元</span>
                                 </div>
-                                <div class="desc"> 全部Turnin金额 </div>
+                                <div class="desc"> 全部Turnin国际<br>金额 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                        <div class="dashboard-stat dashboard-stat-v2 green">
+                        <div class="dashboard-stat dashboard-stat-v2 blue">
                             <div class="visual">
-                                <i class="fa fa-shopping-cart"></i>
+                                <i class="fa fa-comments"></i>
                             </div>
                             <div class="details left">
                                 <div class="number">
-                                    <span id="todayGramCount">0</span><span> 个</span>
+                                    <span id="todayTurninUKCount">0</span><span> 个</span>
                                 </div>
-                                <div class="desc"> 今日Gram订单数 </div>
+                                <div class="desc"> 今日TurninUK<br>订单数 </div>
                             </div>
                             <div class="details right">
                                 <div class="number">
-                                    <span id="todayGramAmount">0</span><span> 元</span>
+                                    <span id="todayTurninUKAmount">0</span><span> 元</span>
                                 </div>
-                                <div class="desc"> 今日Gram金额 </div>
-
+                                <div class="desc"> 今日TurninUK<br>金额 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                        <div class="dashboard-stat dashboard-stat-v2 purple">
+                        <div class="dashboard-stat dashboard-stat-v2 red">
                             <div class="visual">
-                                <i class="fa fa-globe"></i>
+                                <i class="fa fa-bar-chart-o"></i>
                             </div>
                             <div class="details left">
                                 <div class="number">
-                                    <span id="totalGramCount">0</span><span> 个</span>
+                                    <span id="totalTurninUKCount">0</span><span> 个</span>
                                 </div>
-                                <div class="desc"> 全部Gram订单数 </div>
+                                <div class="desc"> 全部TurninUK<br>订单数 </div>
                             </div>
                             <div class="details right">
                                 <div class="number">
-                                    <span id="totalGramAmount">0</span><span> 元</span>
+                                    <span id="totalTurninUKAmount">0</span><span> 元</span>
                                 </div>
-                                <div class="desc"> 全部Gram金额 </div>
+                                <div class="desc"> 全部TurninUK<br>金额 </div>
                             </div>
                         </div>
                     </div>
