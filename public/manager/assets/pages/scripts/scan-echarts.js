@@ -327,33 +327,35 @@ function pie_display(list){
 function line_display(list){
     //整理数据
     var date = [];
-    var turnincount = [], gramcount = [], turninamount = [], gramamount = [];
+    var turnincount = [], turninukcount = [], gramcount = [], turninamount = [], turninukamount = [], gramamount = [];
     //以下是测试数据
     list = [
-        {date:"20200101", turnincount:10, turninamount:100.00, gramcount:20, gramamount:200.00},
-        {date:"20200102", turnincount:9, turninamount:200.00, gramcount:3, gramamount:100.00},
-        {date:"20200103", turnincount:0, turninamount:0.00, gramcount:15, gramamount:200.00},
-        {date:"20200104", turnincount:20, turninamount:150.00, gramcount:0, gramamount:0.00},
-        {date:"20200105", turnincount:11, turninamount:108.00, gramcount:1, gramamount:20.00},
-        {date:"20200106", turnincount:12, turninamount:104.00, gramcount:2, gramamount:40.00},
-        {date:"20200107", turnincount:3, turninamount:200.00, gramcount:3, gramamount:60.00},
-        {date:"20200108", turnincount:5, turninamount:500.00, gramcount:5, gramamount:100.00},
-        {date:"20200109", turnincount:23, turninamount:120.00, gramcount:8, gramamount:250.00},
-        {date:"20200110", turnincount:11, turninamount:180.00, gramcount:10, gramamount:1000.00},
-        {date:"20200111", turnincount:10, turninamount:20.00, gramcount:6, gramamount:60.00},
-        {date:"20200112", turnincount:5, turninamount:30.00, gramcount:20, gramamount:2000.00},
-        {date:"20200113", turnincount:6, turninamount:50.00, gramcount:17, gramamount:170.00},
-        {date:"20200114", turnincount:8, turninamount:80.00, gramcount:11, gramamount:120.00},
-        {date:"20200115", turnincount:20, turninamount:500.00, gramcount:12, gramamount:150.00},
-        {date:"20200116", turnincount:1, turninamount:100.00, gramcount:18, gramamount:180.00},
-        {date:"20200117", turnincount:9, turninamount:180.00, gramcount:19, gramamount:190.00},
-        {date:"20200118", turnincount:15, turninamount:560.00, gramcount:20, gramamount:200.00},
+        {date:"20200101", turnincount:10, turninamount:100.00, gramcount:20, gramamount:200.00, turninukcount:10, turninukamount:100.00},
+        {date:"20200102", turnincount:9, turninamount:200.00, gramcount:3, gramamount:100.00, turninukcount:9, turninukamount:200.00},
+        {date:"20200103", turnincount:0, turninamount:0.00, gramcount:15, gramamount:200.00, turninukcount:8, turninukamount:300.00},
+        {date:"20200104", turnincount:20, turninamount:150.00, gramcount:0, gramamount:0.00, turninukcount:7, turninukamount:500.00},
+        {date:"20200105", turnincount:11, turninamount:108.00, gramcount:1, gramamount:20.00, turninukcount:6, turninukamount:50.00},
+        {date:"20200106", turnincount:12, turninamount:104.00, gramcount:2, gramamount:40.00, turninukcount:5, turninukamount:80.00},
+        {date:"20200107", turnincount:3, turninamount:200.00, gramcount:3, gramamount:60.00, turninukcount:4, turninukamount:20.00},
+        {date:"20200108", turnincount:5, turninamount:500.00, gramcount:5, gramamount:100.00, turninukcount:3, turninukamount:10.00},
+        {date:"20200109", turnincount:23, turninamount:120.00, gramcount:8, gramamount:250.00, turninukcount:2, turninukamount:10.00},
+        {date:"20200110", turnincount:11, turninamount:180.00, gramcount:10, gramamount:1000.00, turninukcount:1, turninukamount:10.00},
+        {date:"20200111", turnincount:10, turninamount:20.00, gramcount:6, gramamount:60.00, turninukcount:10, turninukamount:100.00},
+        {date:"20200112", turnincount:5, turninamount:30.00, gramcount:20, gramamount:2000.00, turninukcount:9, turninukamount:200.00},
+        {date:"20200113", turnincount:6, turninamount:50.00, gramcount:17, gramamount:170.00, turninukcount:8, turninukamount:100.00},
+        {date:"20200114", turnincount:8, turninamount:80.00, gramcount:11, gramamount:120.00, turninukcount:7, turninukamount:100.00},
+        {date:"20200115", turnincount:20, turninamount:500.00, gramcount:12, gramamount:150.00, turninukcount:8, turninukamount:100.00},
+        {date:"20200116", turnincount:1, turninamount:100.00, gramcount:18, gramamount:180.00, turninukcount:2, turninukamount:100.00},
+        {date:"20200117", turnincount:9, turninamount:180.00, gramcount:19, gramamount:190.00, turninukcount:4, turninukamount:100.00},
+        {date:"20200118", turnincount:15, turninamount:560.00, gramcount:20, gramamount:200.00, turninukcount:10, turninukamount:300.00},
     ];
     for(var i in list){
         date.push(formatDate(list[i].date));
         turnincount.push(list[i].turnincount);
+        turninukcount.push(list[i].turninukcount);
         gramcount.push(list[i].gramcount);
         turninamount.push(list[i].turninamount);
+        turninukamount.push(list[i].turninamount);
         gramamount.push(list[i].gramamount);
     }
     var lineCharts = echarts.init(document.getElementById("echarts_line"));
@@ -362,7 +364,7 @@ function line_display(list){
             trigger:'axis'
         },
         legend:{
-            data: ['Turnin订单数', 'Gram订单数', 'Turnin订单金额', 'Gram订单金额']
+            data: ['Turnin国际订单数', 'TurninUK订单数', 'Gram订单数', 'Turnin国际订单金额','TurninUK订单金额', 'Gram订单金额']
         },
         grid:{
             top:'20%',
@@ -395,8 +397,14 @@ function line_display(list){
             }
         ],
         series:[{
-            name:'Turnin订单数',
+            name:'Turnin国际订单数',
             data:turnincount,//[1,1,3,0,1,3],
+            smooth:true,
+            yAxisIndex: 0,
+            type:'line'
+        },{
+            name:'TurninUK订单数',
+            data:turninukcount,//[1,1,3,0,1,3],
             smooth:true,
             yAxisIndex: 0,
             type:'line'
@@ -407,8 +415,13 @@ function line_display(list){
             yAxisIndex: 0,
             type:'line'
         },{
-            name:'Turnin订单金额',
+            name:'Turnin国际订单金额',
             data:turninamount,//[10.00,1.00,0.00,50.00,400.00,100.00],
+            yAxisIndex: 1,
+            type:'bar'
+        },{
+            name:'TurninUK订单金额',
+            data:turninukamount,//[10.00,1.00,0.00,50.00,400.00,100.00],
             yAxisIndex: 1,
             type:'bar'
         },{
