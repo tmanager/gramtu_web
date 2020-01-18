@@ -9,13 +9,14 @@ if(App.isAngularJsApp() === false){
         //判断密码是否是原始密码
         Password.init();
         line_display([]);
-        pie_display([]);
+        status_pie_display([]);
+        checktype_pie_display([]);
         // 取订单及人数统计
         orderStatisticsQuery();
         //按日期获取扫描次数（日）
         getOderStatisticsOfDay();
         //不分页取所有订单
-        orderDataGet({title: "", currentpage: "", pagesize: "100", startindex: "0", draw: 1}, null);
+        oderDistributeGet();
         if(localStorage.getItem("repassword") == 0){
             updatePasswordAlert();
         }
@@ -271,14 +272,14 @@ function bar_display(){
 
 }
 
-function pie_display(list){
+function status_pie_display(list){
     //整理返回的数据
     var legend = ["待支付", "检测中", "报告下载中","检测完成", "已退款"];
     var value = [0, 0, 0, 0, 0];
     for(var i in list){
         for(var j in legend){
             if(list[i].status == legend[j]){
-                value[j] ++
+                value[j] = list[i].value
             }
         }
     }
@@ -324,31 +325,61 @@ function pie_display(list){
 
 }
 
+function checktype_pie_display(list){
+    //整理返回的数据
+    var legend = ["Turnin国际", "TurninUK", "Gram语法检测"];
+    var value = [0, 0, 0];
+    for(var i in list){
+        for(var j in legend){
+            if(list[i].checktype == legend[j]){
+                value[j] = list[i].value;
+            }
+        }
+    }
+    var barCharts = echarts.init(document.getElementById("echarts_pie1"));
+    var option = {
+        //绘制网格
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 10,
+            top: 20,
+            bottom: 20,
+            data: legend,
+        },
+        series: [
+            {
+                name: '订单分布',
+                type: 'pie',
+                radius: '55%',
+                center: ['40%', '50%'],
+                data: [
+                    {name: "Turnin国际", value: value[0]},
+                    {name: "TurninUK", value: value[1]},
+                    {name: "Gram语法检测", value: value[2]}
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    barCharts.setOption(option);
+
+}
+
 function line_display(list){
     //整理数据
     var date = [];
     var turnincount = [], turninukcount = [], gramcount = [], turninamount = [], turninukamount = [], gramamount = [];
-    //以下是测试数据
-    list = [
-        {date:"20200101", turnincount:10, turninamount:100.00, gramcount:20, gramamount:200.00, turninukcount:10, turninukamount:100.00},
-        {date:"20200102", turnincount:9, turninamount:200.00, gramcount:3, gramamount:100.00, turninukcount:9, turninukamount:200.00},
-        {date:"20200103", turnincount:0, turninamount:0.00, gramcount:15, gramamount:200.00, turninukcount:8, turninukamount:300.00},
-        {date:"20200104", turnincount:20, turninamount:150.00, gramcount:0, gramamount:0.00, turninukcount:7, turninukamount:500.00},
-        {date:"20200105", turnincount:11, turninamount:108.00, gramcount:1, gramamount:20.00, turninukcount:6, turninukamount:50.00},
-        {date:"20200106", turnincount:12, turninamount:104.00, gramcount:2, gramamount:40.00, turninukcount:5, turninukamount:80.00},
-        {date:"20200107", turnincount:3, turninamount:200.00, gramcount:3, gramamount:60.00, turninukcount:4, turninukamount:20.00},
-        {date:"20200108", turnincount:5, turninamount:500.00, gramcount:5, gramamount:100.00, turninukcount:3, turninukamount:10.00},
-        {date:"20200109", turnincount:23, turninamount:120.00, gramcount:8, gramamount:250.00, turninukcount:2, turninukamount:10.00},
-        {date:"20200110", turnincount:11, turninamount:180.00, gramcount:10, gramamount:1000.00, turninukcount:1, turninukamount:10.00},
-        {date:"20200111", turnincount:10, turninamount:20.00, gramcount:6, gramamount:60.00, turninukcount:10, turninukamount:100.00},
-        {date:"20200112", turnincount:5, turninamount:30.00, gramcount:20, gramamount:2000.00, turninukcount:9, turninukamount:200.00},
-        {date:"20200113", turnincount:6, turninamount:50.00, gramcount:17, gramamount:170.00, turninukcount:8, turninukamount:100.00},
-        {date:"20200114", turnincount:8, turninamount:80.00, gramcount:11, gramamount:120.00, turninukcount:7, turninukamount:100.00},
-        {date:"20200115", turnincount:20, turninamount:500.00, gramcount:12, gramamount:150.00, turninukcount:8, turninukamount:100.00},
-        {date:"20200116", turnincount:1, turninamount:100.00, gramcount:18, gramamount:180.00, turninukcount:2, turninukamount:100.00},
-        {date:"20200117", turnincount:9, turninamount:180.00, gramcount:19, gramamount:190.00, turninukcount:4, turninukamount:100.00},
-        {date:"20200118", turnincount:15, turninamount:560.00, gramcount:20, gramamount:200.00, turninukcount:10, turninukamount:300.00},
-    ];
     for(var i in list){
         date.push(formatDate(list[i].date));
         turnincount.push(list[i].turnincount);
@@ -452,6 +483,7 @@ function getOrderStatisticsEnd(flg,result,type){
     $("#todayGramAmount").html(formatCurrency(43.00));
     $("#totalGramCount").html(formatNumber(60));
     $("#totalGramAmount").html(formatCurrency(430.00));
+    //测试数据结束
     if(flg){
         if (result && result.retcode == SUCCESS) {
             //将返回结果显示
@@ -477,6 +509,29 @@ function getOrderStatisticsEnd(flg,result,type){
 }
 
 function getOrderStatisticsOfDayEnd(flg,result,type){
+    //以下是测试数据
+    var list = [
+        {date:"20200101", turnincount:10, turninamount:100.00, gramcount:20, gramamount:200.00, turninukcount:10, turninukamount:100.00},
+        {date:"20200102", turnincount:9, turninamount:200.00, gramcount:3, gramamount:100.00, turninukcount:9, turninukamount:200.00},
+        {date:"20200103", turnincount:0, turninamount:0.00, gramcount:15, gramamount:200.00, turninukcount:8, turninukamount:300.00},
+        {date:"20200104", turnincount:20, turninamount:150.00, gramcount:0, gramamount:0.00, turninukcount:7, turninukamount:500.00},
+        {date:"20200105", turnincount:11, turninamount:108.00, gramcount:1, gramamount:20.00, turninukcount:6, turninukamount:50.00},
+        {date:"20200106", turnincount:12, turninamount:104.00, gramcount:2, gramamount:40.00, turninukcount:5, turninukamount:80.00},
+        {date:"20200107", turnincount:3, turninamount:200.00, gramcount:3, gramamount:60.00, turninukcount:4, turninukamount:20.00},
+        {date:"20200108", turnincount:5, turninamount:500.00, gramcount:5, gramamount:100.00, turninukcount:3, turninukamount:10.00},
+        {date:"20200109", turnincount:23, turninamount:120.00, gramcount:8, gramamount:250.00, turninukcount:2, turninukamount:10.00},
+        {date:"20200110", turnincount:11, turninamount:180.00, gramcount:10, gramamount:1000.00, turninukcount:1, turninukamount:10.00},
+        {date:"20200111", turnincount:10, turninamount:20.00, gramcount:6, gramamount:60.00, turninukcount:10, turninukamount:100.00},
+        {date:"20200112", turnincount:5, turninamount:30.00, gramcount:20, gramamount:2000.00, turninukcount:9, turninukamount:200.00},
+        {date:"20200113", turnincount:6, turninamount:50.00, gramcount:17, gramamount:170.00, turninukcount:8, turninukamount:100.00},
+        {date:"20200114", turnincount:8, turninamount:80.00, gramcount:11, gramamount:120.00, turninukcount:7, turninukamount:100.00},
+        {date:"20200115", turnincount:20, turninamount:500.00, gramcount:12, gramamount:150.00, turninukcount:8, turninukamount:100.00},
+        {date:"20200116", turnincount:1, turninamount:100.00, gramcount:18, gramamount:180.00, turninukcount:2, turninukamount:100.00},
+        {date:"20200117", turnincount:9, turninamount:180.00, gramcount:19, gramamount:190.00, turninukcount:4, turninukamount:100.00},
+        {date:"20200118", turnincount:15, turninamount:560.00, gramcount:20, gramamount:200.00, turninukcount:10, turninukamount:300.00},
+    ];
+    line_display(list);
+    //测试数据结束
     if(flg){
         if (result && result.retcode == SUCCESS) {
             //显示柱状图
@@ -499,12 +554,34 @@ function getOrderStatisticsOfDayEnd(flg,result,type){
     App.unblockUI('#lay-out');
 }
 
-function getOrderDataEnd(flg, result, callback){
+function getOrderDistributeEnd(flg, result, callback){
     App.unblockUI('#lay-out');
+    //以下是测试数据
+    var list1 = [
+        {status:"待支付", value:10},
+        {status:"检测中", value:0},
+        {status:"报告下载中", value:1},
+        {status:"检测完成", value:22},
+        {status:"已退款", value:0}
+    ];
+    var list2 = [
+        {checktype:"Turnin国际", value:17},
+        {checktype:"TurninUK", value:5},
+        {checktype:"Gram语法检测", value:11},
+    ];
+    //根据status进行分类
+    status_pie_display(list1);
+    //根据checktype3种类型（国际，UK，语法就检测三个的分布）
+    checktype_pie_display(list2);
+    //测试数据结束
+
     if(flg){
         if (result && result.retcode == SUCCESS) {
             var res = result.response;
-            pie_display(res.orderlist);
+            //根据status进行分类
+            status_pie_display(res.statussort);
+            //根据checktype3种类型（国际，UK，语法就检测三个的分布）
+            checktype_pie_display(res.checktypesort);
         }
     }
 }

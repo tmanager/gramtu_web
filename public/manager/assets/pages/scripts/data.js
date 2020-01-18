@@ -1101,7 +1101,6 @@ function orderStatisticsQuery() {
     });
 }
 
-
 //订单统计数据获取
 function oderStatisticsOfDay() {
     App.blockUI({target: '#lay-out',boxed: true});
@@ -1164,6 +1163,27 @@ function suggestEdit(data){
         error: function (errorMsg) {
             console.info("suggestEdit-error:" + JSON.stringify(errorMsg));
             suggestInfoEditEnd(false, "", null);
+        }
+    });
+}
+
+//订单统计数据获取
+function oderDistributeGet() {
+    App.blockUI({target: '#lay-out',boxed: true});
+    $.ajax({
+        type: "post",
+        contentType: "application/json",
+        async: true,           //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url: webUrl + "order/distribute",    //请求发送到TestServlet处
+        data: sendMessageEdit(DEFAULT, null),
+        dataType: "json",        //返回数据形式为json
+        success: function (result) {
+            console.info("oderDistributeGet:" + JSON.stringify(result));
+            getOrderDistributeEnd(true, result);
+        },
+        error: function (errorMsg) {
+            console.info("oderDistributeGet-error:" + JSON.stringify(errorMsg));
+            getOrderDistributeEnd(false, "");
         }
     });
 }
