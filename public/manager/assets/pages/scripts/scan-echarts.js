@@ -332,7 +332,7 @@ function status_pie_display(list){
 
 function checktype_pie_display(list){
     //整理返回的数据
-    var legend = ["Turnin国际", "TurninUK", "Gram语法检测"];
+    var legend = ["Turnitin国际", "TurnitinUK", "Grammarly"];
     var value = [0, 0, 0];
     for(var i in list){
         for(var j in legend){
@@ -363,9 +363,9 @@ function checktype_pie_display(list){
                 radius: '55%',
                 center: ['40%', '50%'],
                 data: [
-                    {name: "Turnin国际", value: value[0]},
-                    {name: "TurninUK", value: value[1]},
-                    {name: "Gram语法检测", value: value[2]}
+                    {name: "Turnitin国际", value: value[0]},
+                    {name: "TurnitinUK", value: value[1]},
+                    {name: "Grammarly", value: value[2]}
                 ],
                 emphasis: {
                     itemStyle: {
@@ -514,44 +514,44 @@ function line_display(list){
 
 function getOrderStatisticsEnd(flg,result,type){
     //以下是测试数据
-    $("#todayUser").html(formatNumber(5));
-    $("#totalUser").html(formatNumber(100));
-    $("#totalCount").html(formatNumber(150));
-    $("#totalAmount").html(formatCurrency(2430.00));
-    $("#todayTurninCount").html(formatNumber(7));
-    $("#todayTurninAmount").html(formatCurrency(100.00));
-    $("#totalTurninCount").html(formatNumber(50));
-    $("#totalTurninAmount").html(formatCurrency(1000.00));
-    $("#todayTurninUKCount").html(formatNumber(4));
-    $("#todayTurninUKAmount").html(formatCurrency(100.00));
-    $("#totalTurninUKCount").html(formatNumber(60));
-    $("#totalTurninUKAmount").html(formatCurrency(1000.00));
-    $("#todayGramCount").html(formatNumber(6));
-    $("#todayGramAmount").html(formatCurrency(43.00));
-    $("#totalGramCount").html(formatNumber(60));
-    $("#totalGramAmount").html(formatCurrency(430.00));
+    // $("#todayUser").html(formatNumber(5));
+    // $("#totalUser").html(formatNumber(100));
+    // $("#totalCount").html(formatNumber(150));
+    // $("#totalAmount").html(formatCurrency(2430.00));
+    // $("#todayTurninCount").html(formatNumber(7));
+    // $("#todayTurninAmount").html(formatCurrency(100.00));
+    // $("#totalTurninCount").html(formatNumber(50));
+    // $("#totalTurninAmount").html(formatCurrency(1000.00));
+    // $("#todayTurninUKCount").html(formatNumber(4));
+    // $("#todayTurninUKAmount").html(formatCurrency(100.00));
+    // $("#totalTurninUKCount").html(formatNumber(60));
+    // $("#totalTurninUKAmount").html(formatCurrency(1000.00));
+    // $("#todayGramCount").html(formatNumber(6));
+    // $("#todayGramAmount").html(formatCurrency(43.00));
+    // $("#totalGramCount").html(formatNumber(60));
+    // $("#totalGramAmount").html(formatCurrency(430.00));
     //测试数据结束
-    if(flg){
-        if (result && result.retcode == SUCCESS) {
-            //将返回结果显示
-            $("#todayUser").html(formatNumber(result.response.todayuser));
-            $("#totalUser").html(formatNumber(result.response.totaluser));
-            $("#totalOrderCount").html(formatNumber(result.response.totalordercount));
-            $("#totalOrderAmount").html(formatCurrency(result.response.totalorderamount / 100));
-            $("#todayGramCount").html(formatNumber(result.response.todaygramcount));
-            $("#todayGramAmount").html(formatCurrency(result.response.todaygramamount / 100));
-            $("#totalGramCount").html(formatNumber(result.response.totalgramcount));
-            $("#totalGramAmount").html(formatCurrency(result.response.totalgramamount / 100));
-            $("#todayTurninCount").html(formatNumber(result.response.todayturnincount));
-            $("#todayTurninAmount").html(formatCurrency(result.response.todayturninamount / 100));
-            $("#totalTurninCount").html(formatNumber(result.response.totalturnincount));
-            $("#totalTurninAmount").html(formatCurrency(result.response.totalturninamount / 100));
-            $("#todayTurninUKCount").html(formatNumber(result.response.todayturninukcount));
-            $("#todayTurninUKAmount").html(formatCurrency(result.response.todayturninukamount / 100));
-            $("#totalTurninUKCount").html(formatNumber(result.response.totalturninukcount));
-            $("#totalTurninUKAmount").html(formatCurrency(result.response.totalturninukamount / 100));
-        }
+    // if(flg){
+    if (result && result.retcode == SUCCESS) {
+        //将返回结果显示
+        $("#todayUser").html(formatNumber(result.response.todayuser));
+        $("#totalUser").html(formatNumber(result.response.totaluser));
+        $("#totalOrderCount").html(formatNumber(result.response.totalordercount));
+        $("#totalOrderAmount").html(formatCurrency(result.response.totalorderamount / 100));
+        $("#todayGramCount").html(formatNumber(result.response.todaygramcount));
+        $("#todayGramAmount").html(formatCurrency(result.response.todaygramamount / 100));
+        $("#totalGramCount").html(formatNumber(result.response.totalgramcount));
+        $("#totalGramAmount").html(formatCurrency(result.response.totalgramamount / 100));
+        $("#todayTurninCount").html(formatNumber(result.response.todayturnincount));
+        $("#todayTurninAmount").html(formatCurrency(result.response.todayturninamount / 100));
+        $("#totalTurninCount").html(formatNumber(result.response.totalturnincount));
+        $("#totalTurninAmount").html(formatCurrency(result.response.totalturninamount / 100));
+        $("#todayTurninUKCount").html(formatNumber(result.response.todayturninukcount));
+        $("#todayTurninUKAmount").html(formatCurrency(result.response.todayturninukamount / 100));
+        $("#totalTurninUKCount").html(formatNumber(result.response.totalturninukcount));
+        $("#totalTurninUKAmount").html(formatCurrency(result.response.totalturninukamount / 100));
     }
+    // }
     App.unblockUI('#lay-out');
 }
 
@@ -604,31 +604,31 @@ function getOrderStatisticsOfDayEnd(flg,result,type){
 function getOrderDistributeEnd(flg, result, callback){
     App.unblockUI('#lay-out');
     //以下是测试数据
-    var list1 = [
-        {status:"检测中", value:50},
-        {status:"报告下载中", value:1},
-        {status:"检测完成", value:22}
-    ];
-    var list2 = [
-        {checktype:"Turnin国际", value:17},
-        {checktype:"TurninUK", value:5},
-        {checktype:"Gram语法检测", value:11},
-    ];
+    //var list1 = [
+    //    {status:"检测中", value:50},
+    //    {status:"报告下载中", value:1},
+    //    {status:"检测完成", value:22}
+    //];
+    //var list2 = [
+    //    {checktype:"Turnin国际", value:17},
+    //    {checktype:"TurninUK", value:5},
+    //    {checktype:"Gram语法检测", value:11},
+    //];
     //根据status进行分类
-    status_pie_display(list1);
+    //status_pie_display(list1);
     //根据checktype3种类型（国际，UK，语法就检测三个的分布）
-    checktype_pie_display(list2);
+    //checktype_pie_display(list2);
     //测试数据结束
 
-    if(flg){
-        if (result && result.retcode == SUCCESS) {
-            var res = result.response;
-            //根据status进行分类
-            status_pie_display(res.statussort);
-            //根据checktype3种类型（国际，UK，语法就检测三个的分布）
-            checktype_pie_display(res.checktypesort);
-        }
+    //if(flg){
+    if (result && result.retcode == SUCCESS) {
+        var res = result.response;
+        //根据status进行分类
+        status_pie_display(res.statussort);
+        //根据checktype3种类型（国际，UK，语法就检测三个的分布）
+        checktype_pie_display(res.checktypesort);
     }
+    //}
 }
 
 //将日期格式化
