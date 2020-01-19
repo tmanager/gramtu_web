@@ -274,8 +274,8 @@ function bar_display(){
 
 function status_pie_display(list){
     //整理返回的数据
-    var legend = ["待支付", "检测中", "报告下载中","检测完成", "已退款"];
-    var value = [0, 0, 0, 0, 0];
+    var legend = ["检测中", "报告下载中", "检测完成"];
+    var value = [0, 0, 0];
     for(var i in list){
         for(var j in legend){
             if(list[i].status == legend[j]){
@@ -305,11 +305,9 @@ function status_pie_display(list){
                 radius: '55%',
                 center: ['40%', '50%'],
                 data: [
-                    {name: "待支付", value: value[0]},
-                    {name: "检测中", value: value[1]},
-                    {name: "报告下载中", value: value[2]},
-                    {name: "检测完成", value: value[3]},
-                    {name: "已退款", value: value[4]}
+                    {name: "检测中", value: value[0]},
+                    {name: "报告下载中", value: value[1]},
+                    {name: "检测完成", value: value[2]}
                 ],
                 emphasis: {
                     itemStyle: {
@@ -317,8 +315,15 @@ function status_pie_display(list){
                         shadowOffsetX: 0,
                         shadowColor: 'rgba(0, 0, 0, 0.5)'
                     }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: '{b} : {c} ({d}%)'
+                    }
                 }
             }
+
         ]
     };
     barCharts.setOption(option);
@@ -367,6 +372,12 @@ function checktype_pie_display(list){
                         shadowBlur: 10,
                         shadowOffsetX: 0,
                         shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: '{b} : {c} ({d}%)'
                     }
                 }
             }
@@ -594,11 +605,9 @@ function getOrderDistributeEnd(flg, result, callback){
     App.unblockUI('#lay-out');
     //以下是测试数据
     var list1 = [
-        {status:"待支付", value:10},
-        {status:"检测中", value:0},
+        {status:"检测中", value:50},
         {status:"报告下载中", value:1},
-        {status:"检测完成", value:22},
-        {status:"已退款", value:0}
+        {status:"检测完成", value:22}
     ];
     var list2 = [
         {checktype:"Turnin国际", value:17},
