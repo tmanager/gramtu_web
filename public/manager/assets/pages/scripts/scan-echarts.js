@@ -386,7 +386,7 @@ function line_display(list){
         turninukcount.push(list[i].turninukcount);
         gramcount.push(list[i].gramcount);
         turninamount.push(list[i].turninamount);
-        turninukamount.push(list[i].turninamount);
+        turninukamount.push(list[i].turninukamount);
         gramamount.push(list[i].gramamount);
     }
     var lineCharts = echarts.init(document.getElementById("echarts_line"));
@@ -432,34 +432,70 @@ function line_display(list){
             data:turnincount,//[1,1,3,0,1,3],
             smooth:true,
             yAxisIndex: 0,
-            type:'line'
+            type:'line',
+            label: {
+                show: true,
+                position: 'top'
+            }
         },{
             name:'TurninUK订单数',
             data:turninukcount,//[1,1,3,0,1,3],
             smooth:true,
             yAxisIndex: 0,
-            type:'line'
+            type:'line',
+            label: {
+                show: true,
+                position: 'top'
+            }
         },{
             name:'Gram订单数',
             data:gramcount,//[2,1,3,0,4,3],
             smooth:true,
             yAxisIndex: 0,
-            type:'line'
+            type:'line',
+            label: {
+                show: true,
+                position: 'top'
+            },
+            itemStyle: {
+                normal: {
+                    color:'#0a97ee'
+                }
+            }
         },{
             name:'Turnin国际订单金额',
             data:turninamount,//[10.00,1.00,0.00,50.00,400.00,100.00],
             yAxisIndex: 1,
-            type:'bar'
+            type:'bar',
+            label: {
+                show: true,
+                position: 'top'
+            }
         },{
             name:'TurninUK订单金额',
             data:turninukamount,//[10.00,1.00,0.00,50.00,400.00,100.00],
             yAxisIndex: 1,
-            type:'bar'
+            type:'bar',
+            label: {
+                show: true,
+                position: 'top'
+            }
         },{
             name:'Gram订单金额',
             data:gramamount,//[20.00,3.00,1.00,0.00,200.00,400.00],
             yAxisIndex: 1,
-            type:'bar'
+            type:'bar',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color:'#0a97ee'
+                }
+            }
         }]
     };
     lineCharts.setOption(option);
@@ -489,20 +525,20 @@ function getOrderStatisticsEnd(flg,result,type){
             //将返回结果显示
             $("#todayUser").html(formatNumber(result.response.todayuser));
             $("#totalUser").html(formatNumber(result.response.totaluser));
-            $("#totalCount").html(formatNumber(result.response.totalcount));
-            $("#totalAmount").html(formatCurrency(result.response.totalamount / 100));
-            $("#todayTurninCount").html(formatNumber(result.response.todayturnincount));
-            $("#todayTurninAmount").html(formatCurrency(result.response.todayturninamount / 100));
-            $("#totalTurninCount").html(formatNumber(result.response.totalturnincount));
-            $("#totalTurninAmount").html(formatCurrency(result.response.totalturninamount / 100));
-            $("#todayTurninUKCount").html(formatNumber(result.response.todayturnincount));
-            $("#todayTurninUKAmount").html(formatCurrency(result.response.todayturninamount / 100));
-            $("#totalTurninUKCount").html(formatNumber(result.response.totalturnincount));
-            $("#totalTurninUKAmount").html(formatCurrency(result.response.totalturninamount / 100));
+            $("#totalOrderCount").html(formatNumber(result.response.totalordercount));
+            $("#totalOrderAmount").html(formatCurrency(result.response.totalorderamount / 100));
             $("#todayGramCount").html(formatNumber(result.response.todaygramcount));
             $("#todayGramAmount").html(formatCurrency(result.response.todaygramamount / 100));
             $("#totalGramCount").html(formatNumber(result.response.totalgramcount));
             $("#totalGramAmount").html(formatCurrency(result.response.totalgramamount / 100));
+            $("#todayTurninCount").html(formatNumber(result.response.todayturnincount));
+            $("#todayTurninAmount").html(formatCurrency(result.response.todayturninamount / 100));
+            $("#totalTurninCount").html(formatNumber(result.response.totalturnincount));
+            $("#totalTurninAmount").html(formatCurrency(result.response.totalturninamount / 100));
+            $("#todayTurninUKCount").html(formatNumber(result.response.todayturninukcount));
+            $("#todayTurninUKAmount").html(formatCurrency(result.response.todayturninukamount / 100));
+            $("#totalTurninUKCount").html(formatNumber(result.response.totalturninukcount));
+            $("#totalTurninUKAmount").html(formatCurrency(result.response.totalturninukamount / 100));
         }
     }
     App.unblockUI('#lay-out');
