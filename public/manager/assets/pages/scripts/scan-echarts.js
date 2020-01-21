@@ -8,10 +8,15 @@ if(App.isAngularJsApp() === false){
     jQuery(document).ready(function(){
         //判断密码是否是原始密码
         Password.init();
-        // 取扫描次数
-        //scanQueryOfCounty();
+        line_display([]);
+        status_pie_display([]);
+        checktype_pie_display([]);
+        // 取订单及人数统计
+        orderStatisticsQuery();
         //按日期获取扫描次数（日）
-        //getScanQueryOfDay();
+        getOderStatisticsOfDay();
+        //不分页取所有订单
+        oderDistributeGet();
         if(localStorage.getItem("repassword") == 0){
             updatePasswordAlert();
         }
@@ -124,7 +129,7 @@ function passwordModifyEnd(flg, result){
     }
 }
 
-function getScanQueryOfDay(){
+function getOderStatisticsOfDay(){
     //获取本地时间
     var date = new Date();
     var year = date.getFullYear();
@@ -136,8 +141,8 @@ function getScanQueryOfDay(){
     var data = {
         "startDate":startDate,
         "endDate":endDate
-    }
-    scanQueryOfDay(data);
+    };
+    oderStatisticsOfDay(data);
 }
 
 function bar_display(){
@@ -267,13 +272,133 @@ function bar_display(){
 
 }
 
-function line_display(){
+function status_pie_display(list){
+    //整理返回的数据
+    var legend = ["检测中", "报告下载中", "检测完成"];
+    var value = [0, 0, 0];
+    for(var i in list){
+        for(var j in legend){
+            if(list[i].status == legend[j]){
+                value[j] = list[i].value
+            }
+        }
+    }
+    var barCharts = echarts.init(document.getElementById("echarts_pie"));
+    var option = {
+        //绘制网格
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 10,
+            top: 20,
+            bottom: 20,
+            data: legend,
+        },
+        series: [
+            {
+                name: '订单分布',
+                type: 'pie',
+                radius: '55%',
+                center: ['40%', '50%'],
+                data: [
+                    {name: "检测中", value: value[0]},
+                    {name: "报告下载中", value: value[1]},
+                    {name: "检测完成", value: value[2]}
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: '{b} : {c} ({d}%)'
+                    }
+                }
+            }
+
+        ]
+    };
+    barCharts.setOption(option);
+
+}
+
+function checktype_pie_display(list){
+    //整理返回的数据
+    var legend = ["Turnitin国际", "TurnitinUK", "Grammarly"];
+    var value = [0, 0, 0];
+    for(var i in list){
+        for(var j in legend){
+            if(list[i].checktype == legend[j]){
+                value[j] = list[i].value;
+            }
+        }
+    }
+    var barCharts = echarts.init(document.getElementById("echarts_pie1"));
+    var option = {
+        //绘制网格
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 10,
+            top: 20,
+            bottom: 20,
+            data: legend,
+        },
+        series: [
+            {
+                name: '订单分布',
+                type: 'pie',
+                radius: '55%',
+                center: ['40%', '50%'],
+                data: [
+                    {name: "Turnitin国际", value: value[0]},
+                    {name: "TurnitinUK", value: value[1]},
+                    {name: "Grammarly", value: value[2]}
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: '{b} : {c} ({d}%)'
+                    }
+                }
+            }
+        ]
+    };
+    barCharts.setOption(option);
+
+}
+
+function line_display(list){
     //整理数据
     var date = [];
-    var totalCount = [];
-    for(var i in queryDay_list){
-        date.push(formatDate(queryDay_list[i].date));
-        totalCount.push(queryDay_list[i].totalcount);
+    var turnincount = [], turninukcount = [], gramcount = [], turninamount = [], turninukamount = [], gramamount = [];
+    for(var i in list){
+        date.push(formatDate(list[i].date));
+        turnincount.push(list[i].turnincount);
+        turninukcount.push(list[i].turninukcount);
+        gramcount.push(list[i].gramcount);
+        turninamount.push(list[i].turninamount);
+        turninukamount.push(list[i].turninukamount);
+        gramamount.push(list[i].gramamount);
     }
     var lineCharts = echarts.init(document.getElementById("echarts_line"));
     var option = {
@@ -281,7 +406,7 @@ function line_display(){
             trigger:'axis'
         },
         legend:{
-            data:['累计扫描次数']
+            data: ['Turnin国际订单数', 'TurninUK订单数', 'Gram订单数', 'Turnin国际订单金额','TurninUK订单金额', 'Gram订单金额']
         },
         grid:{
             top:'20%',
@@ -291,66 +416,219 @@ function line_display(){
         xAxis:{
             name:'日期',
             type:'category',
-            data:date
+            data:date       //["20200117","20200118","20200119","20200120","20200121","20200122"]
         },
-        yAxis:{
-            name:'累计扫描次数',
-            type:'value',
-            scale:true,
-            splitLine:{
-                show:false
+        yAxis:[
+            {
+                name:'订单数',
+                type:'value',
+                scale:true,
+                position: 'left',
+                splitLine:{
+                    show:false
+                }
+            },
+            {
+                name:'订单金额',
+                type:'value',
+                scale:true,
+                position: 'right',
+                splitLine:{
+                    show:false
+                }
             }
-        },
+        ],
         series:[{
-            name:'累计扫描次数',
-            data:totalCount,
+            name:'Turnin国际订单数',
+            data:turnincount,//[1,1,3,0,1,3],
             smooth:true,
-            type:'line'
+            yAxisIndex: 0,
+            type:'line',
+            label: {
+                show: true,
+                position: 'top'
+            }
+        },{
+            name:'TurninUK订单数',
+            data:turninukcount,//[1,1,3,0,1,3],
+            smooth:true,
+            yAxisIndex: 0,
+            type:'line',
+            label: {
+                show: true,
+                position: 'top'
+            }
+        },{
+            name:'Gram订单数',
+            data:gramcount,//[2,1,3,0,4,3],
+            smooth:true,
+            yAxisIndex: 0,
+            type:'line',
+            label: {
+                show: true,
+                position: 'top'
+            },
+            itemStyle: {
+                normal: {
+                    color:'#0a97ee'
+                }
+            }
+        },{
+            name:'Turnin国际订单金额',
+            data:turninamount,//[10.00,1.00,0.00,50.00,400.00,100.00],
+            yAxisIndex: 1,
+            type:'bar',
+            label: {
+                show: true,
+                position: 'top'
+            }
+        },{
+            name:'TurninUK订单金额',
+            data:turninukamount,//[10.00,1.00,0.00,50.00,400.00,100.00],
+            yAxisIndex: 1,
+            type:'bar',
+            label: {
+                show: true,
+                position: 'top'
+            }
+        },{
+            name:'Gram订单金额',
+            data:gramamount,//[20.00,3.00,1.00,0.00,200.00,400.00],
+            yAxisIndex: 1,
+            type:'bar',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color:'#0a97ee'
+                }
+            }
         }]
     };
     lineCharts.setOption(option);
 }
 
-function scanQueryOfCountyEnd(flg,result,type){
+function getOrderStatisticsEnd(flg,result,type){
+    //以下是测试数据
+    // $("#todayUser").html(formatNumber(5));
+    // $("#totalUser").html(formatNumber(100));
+    // $("#totalCount").html(formatNumber(150));
+    // $("#totalAmount").html(formatCurrency(2430.00));
+    // $("#todayTurninCount").html(formatNumber(7));
+    // $("#todayTurninAmount").html(formatCurrency(100.00));
+    // $("#totalTurninCount").html(formatNumber(50));
+    // $("#totalTurninAmount").html(formatCurrency(1000.00));
+    // $("#todayTurninUKCount").html(formatNumber(4));
+    // $("#todayTurninUKAmount").html(formatCurrency(100.00));
+    // $("#totalTurninUKCount").html(formatNumber(60));
+    // $("#totalTurninUKAmount").html(formatCurrency(1000.00));
+    // $("#todayGramCount").html(formatNumber(6));
+    // $("#todayGramAmount").html(formatCurrency(43.00));
+    // $("#totalGramCount").html(formatNumber(60));
+    // $("#totalGramAmount").html(formatCurrency(430.00));
+    //测试数据结束
+    // if(flg){
+    if (result && result.retcode == SUCCESS) {
+        //将返回结果显示
+        $("#todayUser").html(formatNumber(result.response.todayuser));
+        $("#totalUser").html(formatNumber(result.response.totaluser));
+        $("#totalOrderCount").html(formatNumber(result.response.totalordercount));
+        $("#totalOrderAmount").html(formatCurrency(result.response.totalorderamount / 100));
+        $("#todayGramCount").html(formatNumber(result.response.todaygramcount));
+        $("#todayGramAmount").html(formatCurrency(result.response.todaygramamount / 100));
+        $("#totalGramCount").html(formatNumber(result.response.totalgramcount));
+        $("#totalGramAmount").html(formatCurrency(result.response.totalgramamount / 100));
+        $("#todayTurninCount").html(formatNumber(result.response.todayturnincount));
+        $("#todayTurninAmount").html(formatCurrency(result.response.todayturninamount / 100));
+        $("#totalTurninCount").html(formatNumber(result.response.totalturnincount));
+        $("#totalTurninAmount").html(formatCurrency(result.response.totalturninamount / 100));
+        $("#todayTurninUKCount").html(formatNumber(result.response.todayturninukcount));
+        $("#todayTurninUKAmount").html(formatCurrency(result.response.todayturninukamount / 100));
+        $("#totalTurninUKCount").html(formatNumber(result.response.totalturninukcount));
+        $("#totalTurninUKAmount").html(formatCurrency(result.response.totalturninukamount / 100));
+    }
+    // }
+    App.unblockUI('#lay-out');
+}
+
+function getOrderStatisticsOfDayEnd(flg,result,type){
+    //以下是测试数据
+    var list = [
+        {date:"20200101", turnincount:10, turninamount:100.00, gramcount:20, gramamount:200.00, turninukcount:10, turninukamount:100.00},
+        {date:"20200102", turnincount:9, turninamount:200.00, gramcount:3, gramamount:100.00, turninukcount:9, turninukamount:200.00},
+        {date:"20200103", turnincount:0, turninamount:0.00, gramcount:15, gramamount:200.00, turninukcount:8, turninukamount:300.00},
+        {date:"20200104", turnincount:20, turninamount:150.00, gramcount:0, gramamount:0.00, turninukcount:7, turninukamount:500.00},
+        {date:"20200105", turnincount:11, turninamount:108.00, gramcount:1, gramamount:20.00, turninukcount:6, turninukamount:50.00},
+        {date:"20200106", turnincount:12, turninamount:104.00, gramcount:2, gramamount:40.00, turninukcount:5, turninukamount:80.00},
+        {date:"20200107", turnincount:3, turninamount:200.00, gramcount:3, gramamount:60.00, turninukcount:4, turninukamount:20.00},
+        {date:"20200108", turnincount:5, turninamount:500.00, gramcount:5, gramamount:100.00, turninukcount:3, turninukamount:10.00},
+        {date:"20200109", turnincount:23, turninamount:120.00, gramcount:8, gramamount:250.00, turninukcount:2, turninukamount:10.00},
+        {date:"20200110", turnincount:11, turninamount:180.00, gramcount:10, gramamount:1000.00, turninukcount:1, turninukamount:10.00},
+        {date:"20200111", turnincount:10, turninamount:20.00, gramcount:6, gramamount:60.00, turninukcount:10, turninukamount:100.00},
+        {date:"20200112", turnincount:5, turninamount:30.00, gramcount:20, gramamount:2000.00, turninukcount:9, turninukamount:200.00},
+        {date:"20200113", turnincount:6, turninamount:50.00, gramcount:17, gramamount:170.00, turninukcount:8, turninukamount:100.00},
+        {date:"20200114", turnincount:8, turninamount:80.00, gramcount:11, gramamount:120.00, turninukcount:7, turninukamount:100.00},
+        {date:"20200115", turnincount:20, turninamount:500.00, gramcount:12, gramamount:150.00, turninukcount:8, turninukamount:100.00},
+        {date:"20200116", turnincount:1, turninamount:100.00, gramcount:18, gramamount:180.00, turninukcount:2, turninukamount:100.00},
+        {date:"20200117", turnincount:9, turninamount:180.00, gramcount:19, gramamount:190.00, turninukcount:4, turninukamount:100.00},
+        {date:"20200118", turnincount:15, turninamount:560.00, gramcount:20, gramamount:200.00, turninukcount:10, turninukamount:300.00},
+    ];
+    line_display(list);
+    //测试数据结束
     if(flg){
-        if(result && result.retcode != SUCCESS){
-            alert = result.retmsg;
-            var res = "失败";
-            var text = "";
-            var alert = "";
-            if(alert == "") alert = text + "县域扫描次数" + res + "!";
-            alertDialog(alert);
-        }
         if (result && result.retcode == SUCCESS) {
-            //将返回结果显示
-            $("#todayCount").html(result.response.todayCount);
-            $("#totalCount").html(result.response.totalcount);
-            queryCounty_list = result.response.countyscanlist;
             //显示柱状图
-            bar_display();
+            /**
+             * orderlist结构如下
+             * [
+             *      {
+             *          date:YYYYMMDD,
+             *          turnincount:XX, //当日turnin订单数
+             *          turninamount:XX, //当日turnin订单金额
+             *          gramcount:XX, //当日gram订单数
+             *          gramamount:XX, //当日gram订单金额
+             *      }
+             * ]
+             */
+
+            line_display(result.response.orderlist);
         }
     }
     App.unblockUI('#lay-out');
 }
 
-function scanQueryOfDayEnd(flg,result,type){
-    if(flg){
-        if(result && result.retcode != SUCCESS){
-            alert = result.retmsg;
-            var res = "失败";
-            var text = "";
-            var alert = "";
-            if(alert == "") alert = text + "日扫描次数" + res + "!";
-            alertDialog(alert);
-        }
-        if (result && result.retcode == SUCCESS) {
-            //将返回结果显示
-            queryDay_list = result.response.countyscanlist;
-            //显示柱状图
-            line_display();
-        }
-    }
+function getOrderDistributeEnd(flg, result, callback){
     App.unblockUI('#lay-out');
+    //以下是测试数据
+    //var list1 = [
+    //    {status:"检测中", value:50},
+    //    {status:"报告下载中", value:1},
+    //    {status:"检测完成", value:22}
+    //];
+    //var list2 = [
+    //    {checktype:"Turnin国际", value:17},
+    //    {checktype:"TurninUK", value:5},
+    //    {checktype:"Gram语法检测", value:11},
+    //];
+    //根据status进行分类
+    //status_pie_display(list1);
+    //根据checktype3种类型（国际，UK，语法就检测三个的分布）
+    //checktype_pie_display(list2);
+    //测试数据结束
+
+    //if(flg){
+    if (result && result.retcode == SUCCESS) {
+        var res = result.response;
+        //根据status进行分类
+        status_pie_display(res.statussort);
+        //根据checktype3种类型（国际，UK，语法就检测三个的分布）
+        checktype_pie_display(res.checktypesort);
+    }
+    //}
 }
 
 //将日期格式化

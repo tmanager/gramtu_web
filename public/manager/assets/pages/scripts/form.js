@@ -22,6 +22,7 @@
             var setting = $.extend({}, defaults, options);
             var form = this;
             jsonValue = setting.jsonValue;
+            exclude = setting.exclude;
             //如果传入的json字符串，将转为json对象
             if($.type(setting.jsonValue) === "string" && setting.jsonValue != ""){
                 jsonValue = $.parseJSON(jsonValue);
@@ -35,6 +36,7 @@
                         alert("name:"+key+"; value:"+value);
                         debugInfo += "name:"+key+"; value:"+value+" || ";
                     }
+                    if(exclude.indexOf(key) != -1) return true;
                     var formField = form.find("[name='"+key+"']");
                     if($.type(formField[0]) === "undefined"){
                         if(setting.isDebug){
