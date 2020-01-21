@@ -10,32 +10,36 @@ if (App.isAngularJsApp() === false) {
 }
 //时间选择控件初始化
 $("#starttime").datetimepicker({
-    format: 'yyyy-mm-dd hh:ii',
+    format: 'yyyy-mm-dd',
     language:'zh-CN',
-    todayBtn: 'linked',
-    todayHighlight:true, //高亮‘今天’
-    //clearBtn:true,   //清除按钮
+    todayBtn: true,
+    todayHighlight: true, //高亮‘今天’
+    clearBtn: true,   //清除按钮
     autoclose: true,//选中之后自动隐藏日期选择框
-    endDate : new Date()
+    endDate : new Date(),
+    minView: 'month',
+    forceParse: 0
 }).on('changeDate',function(e){
 
 });
 
 $("#endtime").datetimepicker({
-    format: 'yyyy-mm-dd hh:ii',
+    format: 'yyyy-mm-dd',
     language:'zh-CN',
-    todayBtn: 'linked',
+    todayBtn: true,
     autoclose: true,//选中之后自动隐藏日期选择框
-    todayHighlight:true, //高亮‘今天’
-    //clearBtn:true,   //清除按钮
-    endDate : new Date()
+    todayHighlight: true, //高亮‘今天’
+    clearBtn: true,   //清除按钮
+    endDate : new Date(),
+    minView: 'month',
+    forceParse: 0
 }).on('changeDate',function(e){
 
 });
 
 const dateOptions = {
     language: 'zh-CN',
-    format: 'yyyy-mm-dd HH:ii',
+    format: 'yyyy-mm-dd',
     minuteStep: 1,
     autoclose: true
 };
@@ -80,8 +84,10 @@ var OrderTable = function () {
                 var da = {
                     orderid: formData.orderid,
                     phone: formData.phone,
-                    starttime: formData.starttime.replace(/-|:| /g, ""),
-                    endtime: formData.endtime.replace(/-|:| /g, ""),
+                    startdate: formData.starttime.replace(/-|:| /g, ""),
+                    enddate: formData.endtime.replace(/-|:| /g, ""),
+                    checktype: formData.selectChecktype,
+                    status: formData.selectStatus,
                     currentpage: (data.start / data.length) + 1,
                     pagesize: data.length == -1 ? "": data.length,
                     startindex: data.start,
@@ -99,8 +105,10 @@ var OrderTable = function () {
                 { "data": "fullname" },
                 { "data": "title" },
                 { "data": "filename" },
+                { "data": "wordcnt" },
                 { "data": "status" },
                 { "data": null },
+                { "data": "repetrate" },
                 { "data": null }
             ],
             columnDefs: [
@@ -133,13 +141,18 @@ var OrderTable = function () {
                     "render": function(data, type, row, meta) {
                         return dateTimeFormat(data);
                     }
-                },{
-                    "targets":[8],
-                    "render": function(data, type, row, meta) {
+                }, {
+                    "targets": [8],
+                    "render": function (data, type, row, meta) {
                         return '<a href="' + row.originalurl + '" target="_blank">' + data + '</a>';
                     }
+                }, {
+                    "targets": [9],
+                    "render": function (data, type, row, meta) {
+                        return formatNumber(data);
+                    }
                 },{
-                    "targets":[10],
+                    "targets":[11],
                     "render": function(data, type, row, meta) {
                         if(data.status != "检测完成") return "-";
                         var text = '<a href="' + row.pdfreporturl + '" target="_blank">PDF报告</a>';
@@ -149,7 +162,7 @@ var OrderTable = function () {
                         return text;
                     }
                 },{
-                    "targets":[11],
+                    "targets":[13],
                     "render": function(data, type, row, meta) {
                         return '<a href="javascript:;" id="op_upload">人工上传报告</a>';
                     }
@@ -158,6 +171,7 @@ var OrderTable = function () {
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                 $('td', nRow).attr('style', 'vertical-align: middle;');
                 $('td:eq(0), td:eq(3), td:eq(4), td:eq(5)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
+                $('td:eq(8), td:eq(11)', nRow).attr('style', 'text-align: right; vertical-align: middle;');
             }
         });
     };
@@ -185,10 +199,10 @@ var OrderEdit = function() {
                 },
                 pdfreporturl: {
                     required: true,
-                },
-                htmlreporturl: {
-                    frequired: true,
                 }
+                // htmlreporturl: {
+                //     frequired: true,
+                // }
             },
 
             messages: {
@@ -197,10 +211,10 @@ var OrderEdit = function() {
                 },
                 pdfreporturl: {
                     required: "PDF报告文件必须选择",
-                },
-                htmlreporturl: {
-                    frequired: "HTML报告文件必须选择",
                 }
+                // htmlreporturl: {
+                //     frequired: "HTML报告文件必须选择",
+                // }
             },
 
             invalidHandler: function(event, validator) { //display error alert on form submit
@@ -250,6 +264,12 @@ var OrderEdit = function() {
                     order = orderList[i];
                 }
             }
+
+            if(order.status != '检测中' && order.status != '报告下载中' && order.status != '检测完成') {
+                alertDialog("只有订单状态为检测中、报告下载中、检测完成的订单才能上传报告！");
+                return;
+            }
+
             if(order.checktype === "2"){
                 $("#fullnamerow").hide();
                 $("#lastnamerow").hide();
@@ -266,6 +286,8 @@ var OrderEdit = function() {
             var exclude = ["htmlreporturl","pdfreporturl"];
             var options = { jsonValue: order, exclude:exclude, isDebug: false};
             $(".order-form").initForm(options);
+            $("#htmlreporturl").val("");
+            $("#pdfreporturl").val("");
             $('#upload_report').modal('show');
         });
         $('#order_modify').click(function() {
@@ -275,9 +297,13 @@ var OrderEdit = function() {
                 var order = $('.order-form').getFormData();
                 var formData = new FormData();
                 var pdfFileInfo = $("#pdfreporturl").get(0).files[0];
-                var htmlFileInfo = $("#htmlreporturl").get(0).files[0];
-                formData.append('pdfreporturl', pdfFileInfo);
-                formData.append('htmlreporturl', htmlFileInfo);
+                if(order.repetrate == "") {
+                    formData.append('htmlreport', pdfFileInfo);
+                } else {
+                    var htmlFileInfo = $("#htmlreporturl").get(0).files[0];
+                    formData.append('htmlreport', htmlFileInfo);
+                }
+                formData.append('pdfreport', pdfFileInfo);
                 formData.append('orderid', order.orderid);
                 formData.append('repetrate', order.repetrate);
                 $.ajax({
@@ -293,7 +319,7 @@ var OrderEdit = function() {
                             $('#upload_report').modal('hide');
                             alertDialog("上传报告文件成功！");
                         } else {
-                            alertDialog("上传报告文件失败！" + result.msg);
+                            alertDialog("上传报告文件失败！" + result.retmsg);
                         }
                     },
                     error: function () {
@@ -348,7 +374,14 @@ function orderInfoEditEnd(flg, result, type){
 }
 
 $("#order_inquiry").on("click", function(){
-    //用户查询
+    // 用户查询
     OrderTable.init();
 });
+
+$("#order_clear").on("click", function(){
+    // 清空查询条件
+    $(".inquiry-form")[0].reset();
+    OrderTable.init();
+});
+
 

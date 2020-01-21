@@ -386,6 +386,20 @@ router.get('/order',function(req,res,next){
     }
 });
 
+// 交易流水查询
+router.get('/jyls',function(req,res,next){
+    console.info(req.url);
+    var uname = req.query.username;
+    if(req.session["ywtUname" + uname]){
+        res.render('manager/report/jyls',{
+            menu:req.url.substr(1),
+            loginsucc:req.session["ywtLogin" + uname]
+        });
+    }else{
+        res.redirect('/login');
+    }
+});
+
 // 微信用户查询
 router.get('/wxuser',function(req,res,next){
     console.info(req.url);
