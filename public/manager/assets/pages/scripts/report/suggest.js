@@ -93,7 +93,8 @@ var SuggestTable = function () {
                 { "data": "content" },
                 { "data": "handle" },
                 { "data": "status" },
-                { "data": null }
+                { "data": null },
+                { "data": "id", visible: false }
             ],
             columnDefs: [
                 {
