@@ -62,6 +62,16 @@ var WXUserTable = function () {
                         return "<img src='" + data + "' style='width: 50px; height:50px'>";
                     }
                 },{
+                    "targets":[4],
+                    "render": function(data, type, row, meta) {
+                        return formatNumber(data);
+                    }
+                },{
+                    "targets":[8],
+                    "render": function(data, type, row, meta) {
+                        return formatNumber(data);
+                    }
+                },{
                     "targets":[9],
                     "render": function(data, type, row, meta) {
                         return formatCurrency(data);
@@ -70,7 +80,8 @@ var WXUserTable = function () {
             ],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                 $('td', nRow).attr('style', 'vertical-align: middle; padding-left: 20px');
-                $('td:eq(0), td:eq(2)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
+                $('td:eq(0), td:eq(2), td:eq(3)', nRow).attr('style', 'text-align: center; vertical-align: middle;');
+                $('td:eq(4), td:eq(8), td:eq(9)', nRow).attr('style', 'text-align: right; vertical-align: middle;');
             }
         });
     };
@@ -101,6 +112,11 @@ function getWXUserDataEnd(flg, result, callback){
         alertDialog("微信用户获取失败！");
     }
 }
+
+$("#wxuser_clear").on("click", function(){
+    //用户查询
+    WXUserTable.init();
+});
 
 $("#wxuser_inquiry").on("click", function(){
     //用户查询
