@@ -536,6 +536,9 @@ function getOrderStatisticsEnd(flg,result,type){
         //将返回结果显示
         $("#todayUser").html(formatNumber(result.response.todayuser));
         $("#totalUser").html(formatNumber(result.response.totaluser));
+        $("#perlUser").html(formatNumber(result.response.peruser));
+        $("#todayOrderCount").html(formatNumber(result.response.todayordercount));
+        $("#todayOrderAmount").html(formatCurrency(result.response.todayorderamount / 100));
         $("#totalOrderCount").html(formatNumber(result.response.totalordercount));
         $("#totalOrderAmount").html(formatCurrency(result.response.totalorderamount / 100));
         $("#todayGramCount").html(formatNumber(result.response.todaygramcount));
