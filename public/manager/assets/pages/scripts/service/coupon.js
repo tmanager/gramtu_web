@@ -189,6 +189,9 @@ var CoupTable = function () {
                             case "1":
                                 cType = "已下架";
                                 break;
+                            case "2":
+                                cType = "已用完";
+                                break;
 
                         }
                         return cType;
