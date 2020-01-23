@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e0416b68-bc88-46c2-83a0-32f83919cda9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/logs/access-.2020-01-22.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/report/jyls.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/manager/assets/pages/scripts/data.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/manager/assets/pages/scripts/report/wxuser.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/report/wxuser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/report/jyls.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/report/jyls.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/report/wxuser.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/report/wxuser.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manager/assets/pages/scripts/const.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/manager/assets/pages/scripts/const.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +82,7 @@
       <workItem from="1579265729728" duration="2281000" />
       <workItem from="1579432094484" duration="2553000" />
       <workItem from="1579528680408" duration="12556000" />
-      <workItem from="1579663314385" duration="3184000" />
+      <workItem from="1579663314385" duration="3403000" />
     </task>
     <task id="LOCAL-00001" summary="a">
       <created>1577061387016</created>
@@ -152,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579616108198</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="修改Bug">
+      <created>1579765476247</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1579765476247</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,14 +188,15 @@
     <MESSAGE value="增加订单页面" />
     <MESSAGE value="提交" />
     <MESSAGE value="完成订单查询" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成订单查询" />
+    <MESSAGE value="修改Bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改Bug" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="301" y="23" key="CommitChangelistDialog2" timestamp="1579616107989">
+    <state x="301" y="23" key="CommitChangelistDialog2" timestamp="1579765475889">
       <screen x="0" y="23" width="1280" height="727" />
     </state>
     <state x="452" y="44" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1577152387853" />
-    <state x="301" y="23" key="CommitChangelistDialog2/0.23.1280.727@0.23.1280.727" timestamp="1579616107989" />
+    <state x="301" y="23" key="CommitChangelistDialog2/0.23.1280.727@0.23.1280.727" timestamp="1579765475889" />
     <state x="61" y="86" width="1158" height="599" key="DiffContextDialog" timestamp="1577203009992">
       <screen x="0" y="23" width="1280" height="727" />
     </state>
@@ -227,11 +230,11 @@
       <screen x="0" y="23" width="1280" height="727" />
     </state>
     <state x="490" y="302" key="VCS.ChangelistChooser/0.23.1280.727@0.23.1280.727" timestamp="1577203049256" />
-    <state x="301" y="154" key="Vcs.Push.Dialog.v2" timestamp="1579441583124">
+    <state x="301" y="154" key="Vcs.Push.Dialog.v2" timestamp="1579765484419">
       <screen x="0" y="23" width="1280" height="727" />
     </state>
     <state x="452" y="187" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1577152394601" />
-    <state x="301" y="154" key="Vcs.Push.Dialog.v2/0.23.1280.727@0.23.1280.727" timestamp="1579441583124" />
+    <state x="301" y="154" key="Vcs.Push.Dialog.v2/0.23.1280.727@0.23.1280.727" timestamp="1579765484419" />
     <state x="363" y="29" width="703" height="716" key="find.popup" timestamp="1579584419802">
       <screen x="0" y="23" width="1280" height="727" />
     </state>

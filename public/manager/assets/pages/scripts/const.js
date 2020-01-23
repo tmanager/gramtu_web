@@ -2,13 +2,21 @@
  * Created by Administrator on 2019/2/19.
  */
 
-var hostIp = "http://127.0.0.1:";
+//var hostIp = "http://127.0.0.1:";
 
+// var regulateSucc = {
+//     "uploadFolder" : "/home/yfdev/src/ywt_web",                       // 上传文件所在文件夹
+//     "loginUrl" : hostIp + "8001/gramtu/ac/web/",                      // 登录URL
+//     "userHostUrl" : hostIp + "8001/gramtu/ac/web/front/",             // 用户相关URL
+//     "gramtuWebUrl": hostIp + "8002/gramtu/web/"                       // web端URL
+// };
+
+var hostIp = "https://www.gramtu.com";
 var regulateSucc = {
     "uploadFolder" : "/home/yfdev/src/ywt_web",                       // 上传文件所在文件夹
-    "loginUrl" : hostIp + "8001/gramtu/ac/web/",                      // 登录URL
-    "userHostUrl" : hostIp + "8001/gramtu/ac/web/front/",             // 用户相关URL
-    "gramtuWebUrl": hostIp + "8002/gramtu/web/"                       // web端URL
+    "loginUrl" : hostIp + "/gramtu/ac/web/",                      // 登录URL
+    "userHostUrl" : hostIp + "/gramtu/ac/web/front/",             // 用户相关URL
+    "gramtuWebUrl": hostIp + "/gramtu/web/"                       // web端URL
 };
 
 const SUCCESS = "0000";
