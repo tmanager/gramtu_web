@@ -291,13 +291,16 @@ var OrderEdit = function() {
             $('#upload_report').modal('show');
         });
         $('#order_modify').click(function() {
+
+            $('#loading').modal('show');
+
             btnDisable($('#order_modify'));
             if ($('.order-form').validate().form()) {
                 //先上传文件
                 var order = $('.order-form').getFormData();
                 var formData = new FormData();
                 var pdfFileInfo = $("#pdfreporturl").get(0).files[0];
-                if(order.repetrate == "") {
+                if($("#htmlreporturl").get(0).files.length == 0) {
                     formData.append('htmlreport', pdfFileInfo);
                 } else {
                     var htmlFileInfo = $("#htmlreporturl").get(0).files[0];
@@ -321,9 +324,11 @@ var OrderEdit = function() {
                         } else {
                             alertDialog("上传报告文件失败！" + result.retmsg);
                         }
+                        $('#loading').modal('hide');
                     },
                     error: function () {
                         alertDialog("上传报告文件失败！");
+                        $('#loading').modal('hide');
                     }
                 });
             }
